@@ -402,6 +402,8 @@ Name | Description                                                              
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 50)                    | No (defaults 10)
 
+(`k` is discarded)
+
 #### Examples
 
 ```http
@@ -567,6 +569,8 @@ Name | Description                                                              
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 100)                   | No (defaults 10)
+
+(`k` is discarded)
 
 #### Examples
 
