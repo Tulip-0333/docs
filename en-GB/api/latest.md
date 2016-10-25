@@ -52,6 +52,14 @@ markdown-toc -i en-GB/api/latest.md
     + [GET /get_user_best](#get-get_user_best)
       - [Parameters](#parameters-3)
       - [Examples](#examples-5)
+  * [Scores](#scores)
+    + [GET /get_scores](#get-get_scores)
+      - [Parameters](#parameters-4)
+      - [Examples](#examples-6)
+  * [Beatmaps](#beatmaps)
+    + [GET /get_beatmaps](#get-get_beatmaps)
+      - [Parameters](#parameters-5)
+      - [Examples](#examples-7)
 - [Notes](#notes)
   * [Modes IDs](#modes-ids)
   * [Ranked statuses on Ripple](#ranked-statuses-on-ripple)
@@ -1032,4 +1040,5 @@ Approved     = 3
 Qualified    = 4
 Loved        = 5
 ```
+
 
