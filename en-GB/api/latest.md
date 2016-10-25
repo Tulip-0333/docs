@@ -350,6 +350,16 @@ The peppy API has no authorization whatsoever. Further, Rate Limiting is IP-only
 
 All requests will result in a 200 response, except for: 404 for requests not implemented yet, 500 in case something went **horribly** wrong, 502/503 in case we fucked up something on our webserver.
 
+```
+[x] get_beatmaps (partially)
+[x] get_user
+[x] get_scores
+[x] get_user_best
+[x] get_user_recent
+[ ] get_match (empty array is always returned)
+[ ] get_replay
+```
+
 ## User
 
 ### GET /get_user
