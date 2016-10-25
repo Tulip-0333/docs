@@ -348,7 +348,7 @@ https://osu.ppy.sh/api/get_user
 
 The peppy API has no authorization whatsoever. Further, Rate Limiting is IP-only, meaning the API token passed is completely disregarded and does not influence the rate limiting. All requests are limited to 60 requests per minute per IP, period.
 
-All requests will result in a 200 response, except for: 404 for requests not implemented yet, 500 in case something went **horribly** wrong, 502/503 in case we fucked up something on our webserver.
+All requests will result in a 200 response, except for: 404 for requests not implemented yet, 500 in case something went **horribly** wrong, 502 or 503 in case we fucked up something on our webserver.
 
 ```
 [x] get_beatmaps (partially)
