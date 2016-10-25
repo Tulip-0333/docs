@@ -338,19 +338,19 @@ In-depth documentation can be found at https://github.com/ppy/osu-api/wiki
 
 The base url is:
 
-```text
+```bash
 https://ripple.moe/api
 ```
 
 E.g., the URL for a GET /get_user request would be
 
-```text
+```bash
 https://ripple.moe/api/get_user
 ```
 
 As this API aims to mimic the osu! API, you can also access it using osu.ppy.sh (having osu.ppy.sh redirected to the Ripple server in the hosts file).
 
-```text
+```bash
 https://osu.ppy.sh/api/get_user
 ```
 
