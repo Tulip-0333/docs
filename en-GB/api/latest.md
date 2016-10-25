@@ -1,9 +1,70 @@
 ---
 name: Latest
 ---
-
 # Ripple API documentation
 ### Latest version, 2016
+
+<!--
+Reminder to self:
+markdown-toc -i en-GB/api/latest.md
+-->
+
+<!-- toc -->
+
+- [Overview](#overview)
+  * [Rate limiting](#rate-limiting)
+  * [Stability](#stability)
+  * [Authorization](#authorization)
+  * [Privileges](#privileges)
+  * [404](#404)
+  * [Parameters](#parameters)
+  * [Arrays](#arrays)
+  * [Response codes](#response-codes)
+  * [Response JSON fields](#response-json-fields)
+  * [JSONP](#jsonp)
+- [Ripple API](#ripple-api)
+  * [Miscellaneous](#miscellaneous)
+    + [GET /ping](#get-ping)
+      - [Response](#response)
+      - [Examples](#examples)
+    + [GET /surprise_me](#get-surprise_me)
+      - [Response](#response-1)
+      - [Examples](#examples-1)
+  * [Tokens](#tokens)
+    + [POST /tokens](#post-tokens)
+      - [JSON fields](#json-fields)
+      - [Response](#response-2)
+      - [Errors](#errors)
+      - [Examples](#examples-2)
+    + [POST /tokens/new](#post-tokensnew)
+    + [GET /tokens](#get-tokens)
+    + [GET /tokens/self](#get-tokensself)
+    + [GET /tokens/self/delete](#get-tokensselfdelete)
+- [peppy API](#peppy-api)
+  * [User](#user)
+    + [GET /get_user](#get-get_user)
+      - [Parameters](#parameters-1)
+      - [Examples](#examples-3)
+  * [User scores](#user-scores)
+    + [GET /get_user_recent](#get-get_user_recent)
+      - [Parameters](#parameters-2)
+      - [Examples](#examples-4)
+    + [GET /get_user_best](#get-get_user_best)
+      - [Parameters](#parameters-3)
+      - [Examples](#examples-5)
+  * [Scores](#scores)
+    + [GET /get_scores](#get-get_scores)
+      - [Parameters](#parameters-4)
+      - [Examples](#examples-6)
+  * [Beatmaps](#beatmaps)
+    + [GET /get_beatmaps](#get-get_beatmaps)
+      - [Parameters](#parameters-5)
+      - [Examples](#examples-7)
+- [Notes](#notes)
+  * [Modes IDs](#modes-ids)
+  * [Ranked statuses on Ripple](#ranked-statuses-on-ripple)
+
+<!-- tocstop -->
 
 # Overview
 
@@ -277,25 +338,35 @@ In-depth documentation can be found at https://github.com/ppy/osu-api/wiki
 
 The base url is:
 
-```text
+```bash
 https://ripple.moe/api
 ```
 
 E.g., the URL for a GET /get_user request would be
 
-```text
+```bash
 https://ripple.moe/api/get_user
 ```
 
 As this API aims to mimic the osu! API, you can also access it using osu.ppy.sh (having osu.ppy.sh redirected to the Ripple server in the hosts file).
 
-```text
+```bash
 https://osu.ppy.sh/api/get_user
 ```
 
 The peppy API has no authorization whatsoever. Further, Rate Limiting is IP-only, meaning the API token passed is completely disregarded and does not influence the rate limiting. All requests are limited to 60 requests per minute per IP, period.
 
-All requests will result in a 200 response, except for: 404 for requests not implemented yet, 500 in case something went **horribly** wrong, 502/503 in case we fucked up something on our webserver.
+All requests will result in a 200 response, except for: 404 for requests not implemented yet, 500 in case something went **horribly** wrong, 502 or 503 in case we fucked up something on our webserver.
+
+```
+[x] get_beatmaps (partially)
+[x] get_user
+[x] get_scores
+[x] get_user_best
+[x] get_user_recent
+[ ] get_match (empty array is always returned)
+[ ] get_replay
+```
 
 ## User
 
@@ -401,6 +472,8 @@ Name | Description                                                              
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 50)                    | No (defaults 10)
+
+(`k` is discarded)
 
 #### Examples
 
@@ -557,7 +630,7 @@ Vary: Accept-Encoding
 
 ### GET /get_user_best
 
-Get an user's best scores. In osu! standard, scores are sorted by pp, while for other game modes, as PP is not implemented yet, they're sorted by score.
+Get an user's best scores. In osu! standard and osu!mania, scores are sorted by pp, while for other game modes, as PP is not implemented yet, they're sorted by score.
 
 #### Parameters
 
@@ -567,6 +640,8 @@ Name | Description                                                              
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 100)                   | No (defaults 10)
+
+(`k` is discarded)
 
 #### Examples
 
@@ -721,6 +796,226 @@ Vary: Accept-Encoding
 ]
 ```
 
+## Scores
+
+### GET /get_scores
+
+Retrieve information about the top 100 scores of a beatmap.
+
+#### Parameters
+
+Name | Description                                                              | Required?
+-----|--------------------------------------------------------------------------|----------
+`b`  | Beatmap ID from which to return score information from.                  | Yes
+`u`  | Username or user ID of the user of which you're requesting the score information on the beatmap. | No
+`m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
+`mods` | Specify to filter scores by a certain mod combination.                 | No
+`type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
+`limit` | Maximum amount of results to return. (0 < x <= 100)                   | No (defaults 10)
+
+(`k` is discarded)
+
+#### Examples
+
+```http
+$ http 'ripple.moe/api/get_scores?b=75&limit=2'
+HTTP/1.1 200 OK
+CF-RAY: 2f77aa98a3283da7-MXP
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Length: 269
+Content-Type: application/json; charset=utf-8
+Date: Tue, 25 Oct 2016 18:17:37 GMT
+Server: cloudflare-nginx
+Vary: Accept-Encoding
+
+[
+    {
+        "count100": "0",
+        "count300": "194",
+        "count50": "0",
+        "countgeki": "45",
+        "countkatu": "0",
+        "countmiss": "0",
+        "date": "2016-10-21 00:49:02",
+        "enabled_mods": "88",
+        "maxcombo": "314",
+        "perfect": "1",
+        "pp": "166.3",
+        "rank": "SSH",
+        "score": "1854375",
+        "score_id": "629651",
+        "user_id": "7880",
+        "username": "Jash"
+    },
+    {
+        "count100": "10",
+        "count300": "184",
+        "count50": "0",
+        "countgeki": "38",
+        "countkatu": "7",
+        "countmiss": "0",
+        "date": "2016-09-22 17:55:44",
+        "enabled_mods": "80",
+        "maxcombo": "314",
+        "perfect": "1",
+        "pp": "82.9",
+        "rank": "S",
+        "score": "1692113",
+        "score_id": "485504",
+        "user_id": "9464",
+        "username": "enjoy game"
+    }
+]
+```
+
+```http
+$ http 'ripple.moe/api/get_scores?b=75&u=9464'
+HTTP/1.1 200 OK
+CF-RAY: 2f77ac5bc3b13d7d-MXP
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Length: 204
+Content-Type: application/json; charset=utf-8
+Date: Tue, 25 Oct 2016 18:18:49 GMT
+Server: cloudflare-nginx
+Vary: Accept-Encoding
+
+[
+    {
+        "count100": "10",
+        "count300": "184",
+        "count50": "0",
+        "countgeki": "38",
+        "countkatu": "7",
+        "countmiss": "0",
+        "date": "2016-09-22 17:55:44",
+        "enabled_mods": "80",
+        "maxcombo": "314",
+        "perfect": "1",
+        "pp": "82.9",
+        "rank": "S",
+        "score": "1692113",
+        "score_id": "485504",
+        "user_id": "9464",
+        "username": "enjoy game"
+    }
+]
+```
+
+## Beatmaps
+
+### GET /get_beatmaps
+
+Retrieves general information about beatmaps. This method on Ripple lacks a
+lot of information and is not really backwards-compatible, because a lot of
+the information that osu! gives is not cached on Ripple. Please, in case you can,
+use osu!'s get_beatmaps rather than Ripple's, as osu!'s is far more accurate.
+
+#### Parameters
+
+Name | Description                                                              | Required?
+-----|--------------------------------------------------------------------------|----------
+`s`  | Beatmap set ID of which to return the information.                       | No
+`b`  | Beatmap ID of which to return the information.                           | No
+`m`  | Number of the gamemode for which you are requesting difficulty information. [See Modes IDs](#modes-ids) | No 
+`a`  | Specify whether converted beatmaps are included.                         | No (defaults 0)
+`h`  | MD5 beatmap hash.                                                        | No
+`limit` | Maximum amount of results to return. (0 < x <= 500)                   | No (defaults 500)
+
+(`k`, `since`, `u`, `type` are discarded)
+
+#### Examples
+
+```http
+$ http 'ripple.moe/api/get_beatmaps?limit=1'
+HTTP/1.1 200 OK
+CF-RAY: 2f77e436e6604304-MXP
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Length: 353
+Content-Type: application/json; charset=utf-8
+Date: Tue, 25 Oct 2016 18:56:57 GMT
+Server: cloudflare-nginx
+Vary: Accept-Encoding
+
+[
+    {
+        "approved": "1",
+        "approved_date": "2016-10-25 20:56:56",
+        "artist": "Dark PHOENiX",
+        "beatmap_id": "81995",
+        "beatmapset_id": "21204",
+        "bpm": "155",
+        "creator": "",
+        "diff_approach": "6",
+        "diff_drain": "0",
+        "diff_overall": "5",
+        "diff_size": "0",
+        "difficultyrating": "2.24463",
+        "favourite_count": "0",
+        "file_md5": "7d70e707f03b92d6c2f283e65337c131",
+        "genre_id": "0",
+        "hit_length": "186",
+        "language_id": "0",
+        "last_update": "2016-10-25 20:56:56",
+        "max_combo": "500",
+        "mode": "0",
+        "passcount": "0",
+        "playcount": "0",
+        "source": "",
+        "tags": "",
+        "title": "The Magic Library BARUWA",
+        "total_length": "186",
+        "version": "Hard"
+    }
+]
+```
+```http
+$ http 'ripple.moe/api/get_beatmaps?limit=1&m=3&a=1'
+HTTP/1.1 200 OK
+CF-RAY: 2f77e8c1a53f4304-MXP
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Length: 344
+Content-Type: application/json; charset=utf-8
+Date: Tue, 25 Oct 2016 19:00:03 GMT
+Server: cloudflare-nginx
+Vary: Accept-Encoding
+
+[
+    {
+        "approved": "0",
+        "approved_date": "0001-01-01 00:00:00",
+        "artist": "S3RL",
+        "beatmap_id": "1035817",
+        "beatmapset_id": "485751",
+        "bpm": "175",
+        "creator": "",
+        "diff_approach": "5",
+        "diff_drain": "0",
+        "diff_overall": "8",
+        "diff_size": "0",
+        "difficultyrating": "5.34844",
+        "favourite_count": "0",
+        "file_md5": "605af80713cdd7ad1d60cabd2b2014e3",
+        "genre_id": "0",
+        "hit_length": "273",
+        "language_id": "0",
+        "last_update": "2016-10-25 21:00:00",
+        "max_combo": "0",
+        "mode": "3",
+        "passcount": "0",
+        "playcount": "0",
+        "source": "",
+        "tags": "",
+        "title": "Doof Doof Untz Untz",
+        "total_length": "273",
+        "version": "HARD RAVE"
+    }
+]
+```
+
 # Notes
 
 ## Modes IDs
@@ -746,6 +1041,4 @@ Qualified    = 4
 Loved        = 5
 ```
 
-## TODO
 
-* Add Responses to peppyapi's methods
