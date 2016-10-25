@@ -1,9 +1,62 @@
 ---
 name: Latest
 ---
-
 # Ripple API documentation
 ### Latest version, 2016
+
+<!--
+Reminder to self:
+markdown-toc -i en-GB/api/latest.md
+-->
+
+<!-- toc -->
+
+- [Overview](#overview)
+  * [Rate limiting](#rate-limiting)
+  * [Stability](#stability)
+  * [Authorization](#authorization)
+  * [Privileges](#privileges)
+  * [404](#404)
+  * [Parameters](#parameters)
+  * [Arrays](#arrays)
+  * [Response codes](#response-codes)
+  * [Response JSON fields](#response-json-fields)
+  * [JSONP](#jsonp)
+- [Ripple API](#ripple-api)
+  * [Miscellaneous](#miscellaneous)
+    + [GET /ping](#get-ping)
+      - [Response](#response)
+      - [Examples](#examples)
+    + [GET /surprise_me](#get-surprise_me)
+      - [Response](#response-1)
+      - [Examples](#examples-1)
+  * [Tokens](#tokens)
+    + [POST /tokens](#post-tokens)
+      - [JSON fields](#json-fields)
+      - [Response](#response-2)
+      - [Errors](#errors)
+      - [Examples](#examples-2)
+    + [POST /tokens/new](#post-tokensnew)
+    + [GET /tokens](#get-tokens)
+    + [GET /tokens/self](#get-tokensself)
+    + [GET /tokens/self/delete](#get-tokensselfdelete)
+- [peppy API](#peppy-api)
+  * [User](#user)
+    + [GET /get_user](#get-get_user)
+      - [Parameters](#parameters-1)
+      - [Examples](#examples-3)
+  * [User scores](#user-scores)
+    + [GET /get_user_recent](#get-get_user_recent)
+      - [Parameters](#parameters-2)
+      - [Examples](#examples-4)
+    + [GET /get_user_best](#get-get_user_best)
+      - [Parameters](#parameters-3)
+      - [Examples](#examples-5)
+- [Notes](#notes)
+  * [Modes IDs](#modes-ids)
+  * [Ranked statuses on Ripple](#ranked-statuses-on-ripple)
+
+<!-- tocstop -->
 
 # Overview
 
@@ -749,3 +802,4 @@ Approved     = 3
 Qualified    = 4
 Loved        = 5
 ```
+
