@@ -557,7 +557,7 @@ Vary: Accept-Encoding
 
 ### GET /get_user_best
 
-Get an user's best scores. In osu! standard, scores are sorted by pp, while for other game modes, as PP is not implemented yet, they're sorted by score.
+Get an user's best scores. In osu! standard and osu!mania, scores are sorted by pp, while for other game modes, as PP is not implemented yet, they're sorted by score.
 
 #### Parameters
 
@@ -745,7 +745,3 @@ Approved     = 3
 Qualified    = 4
 Loved        = 5
 ```
-
-## TODO
-
-* Add Responses to peppyapi's methods
