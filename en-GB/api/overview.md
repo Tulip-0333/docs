@@ -1,7 +1,6 @@
 ---
 name: Overview
 ---
-
 # Overview
 
 If you'd want to see something implemented in the API, you can open an issue at [this GitHub repository](https://github.com/osuripple/api-features), and we'll look into it.
@@ -9,6 +8,19 @@ If you'd want to see something implemented in the API, you can open an issue at 
 Currently no API clients are available, however they are planned for Go and node.js. If you've made an API client, please inform us about it and we'll add it to an eventual list that will be put here in the next API documentation versions.
 
 <!-- toc -->
+
+- [Rate limiting](#rate-limiting)
+- [Stability](#stability)
+- [Authorization](#authorization)
+- [Privileges](#privileges)
+- [404](#404)
+- [Parameters](#parameters)
+- [Arrays](#arrays)
+- [Response codes](#response-codes)
+- [Response JSON fields](#response-json-fields)
+- [JSONP](#jsonp)
+
+<!-- tocstop -->
 
 ## Rate limiting
 
@@ -82,3 +94,4 @@ These are only explained in the documentation when they are not obvious from the
 ## JSONP
 
 If you want to use JSONP, pass a `callback` in the GET parameters, like [this](https://ripple.moe/api/v1/ping?callback=yourFunction). callback names are very restrictive for security reasons, and they must match the regular expression `^[a-zA-Z_\$][a-zA-Z0-9_\$]*$`. If you have problems with this, make an issue at the issue tracker.
+

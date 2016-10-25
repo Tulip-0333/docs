@@ -3,7 +3,7 @@ name: peppy API
 ---
 <!--
 Reminder to self:
-markdown-toc -i en-GB/api/*.md
+for i in en-GB/api/*.md; do markdown-toc -i "$i"; done
 -->
 
 # peppy API
@@ -49,6 +49,31 @@ Implemented requests:
 ## Table of Contents
 
 <!-- toc -->
+
+  * [User](#user)
+    + [GET /get_user](#get-get_user)
+      - [Parameters](#parameters)
+      - [Examples](#examples)
+  * [User scores](#user-scores)
+    + [GET /get_user_recent](#get-get_user_recent)
+      - [Parameters](#parameters-1)
+      - [Examples](#examples-1)
+    + [GET /get_user_best](#get-get_user_best)
+      - [Parameters](#parameters-2)
+      - [Examples](#examples-2)
+  * [Scores](#scores)
+    + [GET /get_scores](#get-get_scores)
+      - [Parameters](#parameters-3)
+      - [Examples](#examples-3)
+  * [Beatmaps](#beatmaps)
+    + [GET /get_beatmaps](#get-get_beatmaps)
+      - [Parameters](#parameters-4)
+      - [Examples](#examples-4)
+- [Notes](#notes)
+  * [Modes IDs](#modes-ids)
+  * [Ranked statuses on Ripple](#ranked-statuses-on-ripple)
+
+<!-- tocstop -->
 
 ## User
 
@@ -722,5 +747,6 @@ Approved     = 3
 Qualified    = 4
 Loved        = 5
 ```
+
 
 
