@@ -1,7 +1,9 @@
 ---
-name: Overview
+name: Appendix
 ---
-# Overview
+# Appendix
+
+This file contains further information explaining additional stuff on the Ripple API not explained in the [main document](v1).
 
 If you'd want to see something implemented in the API, you can open an issue at [this GitHub repository](https://github.com/osuripple/api-features), and we'll look into it.
 

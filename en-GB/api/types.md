@@ -19,9 +19,9 @@ Field name   | Type      | Value
 `id`         | `int`     | The ID of the user.
 `username`   | `string`  | The username.
 `username_aka` | `string`| Alternative username of the user (cannot be used for login).
-`registered_on` | [time](overview#time) | Date and time of when the user signed up on Ripple.
+`registered_on` | [time](appendix#time) | Date and time of when the user signed up on Ripple.
 `privileges` | `uint64`  | Privileges of the user.
-`latest_activity` | [time](overview#time) | Date and time of when the user was last active on Ripple.
+`latest_activity` | [time](appendix#time) | Date and time of when the user was last active on Ripple.
 `country`    | `string`  | 2-letter country code, ISO 3166
 
 ```json
