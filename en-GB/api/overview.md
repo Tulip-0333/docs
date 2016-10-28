@@ -19,6 +19,8 @@ Currently no API clients are available, however they are planned for Go and node
 - [Response codes](#response-codes)
 - [Response JSON fields](#response-json-fields)
 - [JSONP](#jsonp)
+- [Examples](#examples)
+- [Pagination](#pagination)
 
 <!-- tocstop -->
 
@@ -108,3 +110,4 @@ All examples are done using [HTTPie](https://github.com/jkbrzt/httpie), which is
 ## Pagination
 
 Pagination is very common in the API, and can be used to get a specific amount of elements, or get all of them in different "chunks". It follows the same pattern: querystring parameters `p` and `l`, which stand for page and limit (possibly one of the few abbreviated querystring parameters in the API). If a request implements pagination, `Implements pagination.` will be written on the description of a request. If the limit maximum is not 50, it will be specified (``Implements pagination (1 < x <= 100)``, in case there's a maximum of 100).
+
