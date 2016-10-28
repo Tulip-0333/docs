@@ -105,3 +105,6 @@ If you want to use JSONP, pass a `callback` in the GET parameters, like [this](h
 
 All examples are done using [HTTPie](https://github.com/jkbrzt/httpie), which is basically curl for humans, which is to say for people who can't ever remember what curl's arguments are. Basically makes visualising examples much easier. Also, the `Set-Cookie` header is removed from all responses, for security purposes, otherwise there'd be my cloudflare IDs in there.
 
+## Pagination
+
+Pagination is very common in the API, and can be used to get a specific amount of elements, or get all of them in different "chunks". It follows the same pattern: querystring parameters `p` and `l`, which stand for page and limit (possibly one of the few abbreviated querystring parameters in the API). If a request implements pagination, `Implements pagination.` will be written on the description of a request. If the limit maximum is not 50, it will be specified (``Implements pagination (1 < x <= 100)``, in case there's a maximum of 100).
