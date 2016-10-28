@@ -91,6 +91,8 @@ As already mentioned before, `404`s in the API are used, apart from when a metho
 
 Generally speaking, though, requests that return multiple results will return an empty array ([`null`](#arrays)), and those that only return one will return a 404 if the requested element is not found.
 
+POST requests may also return a `422` if there are missing fields, as recommended by our lord and saviour [Stack Overflow](http://stackoverflow.com/a/10323055/5328069).
+
 ## Response JSON fields
 
 These are only explained in the documentation when they are not obvious from the examples. Also, in the Peppyapi, they are not explained at all, because they're already documented on the official API documentation.
