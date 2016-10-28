@@ -21,6 +21,10 @@ Currently no API clients are available, however they are planned for Go and node
 - [JSONP](#jsonp)
 - [Examples](#examples)
 - [Pagination](#pagination)
+- [Time](#time)
+- [Usernames](#usernames)
+- [IN Parameters](#in-parameters)
+- [Sorting](#sorting)
 
 <!-- tocstop -->
 
@@ -110,4 +114,28 @@ All examples are done using [HTTPie](https://github.com/jkbrzt/httpie), which is
 ## Pagination
 
 Pagination is very common in the API, and can be used to get a specific amount of elements, or get all of them in different "chunks". It follows the same pattern: querystring parameters `p` and `l`, which stand for page and limit (possibly one of the few abbreviated querystring parameters in the API). If a request implements pagination, `Implements pagination.` will be written on the description of a request. If the limit maximum is not 50, it will be specified (``Implements pagination (1 < x <= 100)``, in case there's a maximum of 100).
+
+## Time
+
+Time is a tool you can put on the wall, or wear it on your wrist. And, apart from that, it's also that stupid thing humans use to calculate in which part of the day they are.
+
+Time is passed as JSON strings, and formatted using RFC3339. This makes it super-easy to translate times into your programming language's native time, for instance in JavaScript:
+
+```js
+> new Date("2016-10-28T21:10:55+02:00")
+Fri Oct 28 2016 21:10:55 GMT+0200 (CEST)
+```
+
+## Usernames
+
+Just like the osu! API, there is no difference between an underscore and a space in an username.
+
+## IN Parameters
+
+These have a peculiarity. They can be passed multiple times in a query string. What it basically means is that you can look for values being "in a certain group". If you pass in the querystring: `ids=1000&ids=1001&ids=1002`, you will get results for IDs 1000, 1001 and 1002.
+
+## Sorting
+
+The API allows sorting elements. To do so, you will need to pass the parameter `sort`, with the value being the field being sorted, a comma and then asc/desc. By default everything is sorted desc. For instance, `sort=id,desc` will sort by `id` descendently, and also `sort=id` will. When there's a sorting section in an endpoint, the fields that can be sorted will be specified.
+
 

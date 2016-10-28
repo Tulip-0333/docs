@@ -747,7 +747,3 @@ Approved     = 3
 Qualified    = 4
 Loved        = 5
 ```
-
-
-
-
