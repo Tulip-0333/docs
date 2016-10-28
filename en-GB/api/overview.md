@@ -81,11 +81,15 @@ In GET requests, all parameters are passed through the querystring, while in POS
 
 ## Arrays
 
-Often in the API responses you will encounter JSON arrays. They are particular: if they are empty, they are `null`. This is due to Go's slices, because they are always `nil`-lable. If you think this is a problem, hit me at the GitHub issue tracker provided before.
+Often in the API responses you will encounter JSON arrays. They are particular: if they are empty, they are `null`. This is due to Go's slices, because they are always `nil`-lable. If you think this is a problem for your purpose, hit me at the GitHub issue tracker provided before.
 
 ## Response codes
 
 The HTTP response codes will always be the same as the internal `code` of the response, if any. If you require requests to be always 200, pass `pls200` in the GET parameters. (This will only be overridden by 500 errors and 404 errors for non-existing methods).
+
+As already mentioned before, `404`s in the API are used, apart from when a method is missing, also when a specified resource is not found in the database. Because of the fact that they're only second to `200`s when it comes to the most common response codes, they are often omitted in the requests documentation.
+
+Generally speaking, though, requests that return multiple results will return an empty array ([`null`](#arrays)), and those that only return one will return a 404 if the requested element is not found.
 
 ## Response JSON fields
 
