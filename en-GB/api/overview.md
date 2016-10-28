@@ -99,3 +99,7 @@ These are only explained in the documentation when they are not obvious from the
 
 If you want to use JSONP, pass a `callback` in the GET parameters, like [this](https://ripple.moe/api/v1/ping?callback=yourFunction). callback names are very restrictive for security reasons, and they must match the regular expression `^[a-zA-Z_\$][a-zA-Z0-9_\$]*$`. If you have problems with this, make an issue at the issue tracker.
 
+## Examples
+
+All examples are done using [HTTPie](https://github.com/jkbrzt/httpie), which is basically curl for humans, which is to say for people who can't ever remember what curl's arguments are. Basically makes visualising examples much easier. Also, the `Set-Cookie` header is removed from all responses, for security purposes, otherwise there'd be my cloudflare IDs in there.
+
