@@ -10,6 +10,9 @@ This page is an appendix of [v1](v1), showing the types most commonly used in th
 * [User](#user)
 * [ModeStats](#modestats)
 * [Badge](#badge)
+* [Beatmap](#beatmap)
+* [Difficulty](#difficulty)
+* [Score](#score)
 
 <!-- tocstop -->
 
