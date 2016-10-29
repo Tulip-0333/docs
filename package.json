@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "markdown-toc": "^0.13.0",
+    "uslug": "^1.0.4"
+  }
+}
