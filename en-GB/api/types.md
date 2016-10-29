@@ -9,6 +9,8 @@ the API, like "user" and such.
 <!-- toc -->
 
 - [User](#user)
+- [ModeStats](#modestats)
+- [Badge](#badge)
 
 <!-- tocstop -->
 
@@ -79,3 +81,4 @@ Field name   | Type      | Value
     "icon": "fa-code"
 }
 ```
+

@@ -27,6 +27,7 @@ Currently no API clients are available, however they are planned for Go and node
 - [Usernames](#usernames)
 - [IN Parameters](#in-parameters)
 - [Sorting](#sorting)
+- [Play style](#play-style)
 
 <!-- tocstop -->
 
@@ -143,3 +144,4 @@ The API allows sorting elements. To do so, you will need to pass the parameter `
 ## Play style
 
 Play style sometimes appears in the stats of an user. The bitwise enum for it can be found [Here](https://git.zxq.co/ripple/playstyle/src/master/playstyle.go#L11-L21). Must be read as explained in [Privileges](#privileges)
+
