@@ -140,4 +140,6 @@ These have a peculiarity. They can be passed multiple times in a query string. W
 
 The API allows sorting elements. To do so, you will need to pass the parameter `sort`, with the value being the field being sorted, a comma and then asc/desc. By default everything is sorted desc. For instance, `sort=id,desc` will sort by `id` descendently, and also `sort=id` will. When there's a sorting section in an endpoint, the fields that can be sorted will be specified.
 
+## Play style
 
+Play style sometimes appears in the stats of an user. The bitwise enum for it can be found [Here](https://git.zxq.co/ripple/playstyle/src/master/playstyle.go#L11-L21). Must be read as explained in [Privileges](#privileges)
