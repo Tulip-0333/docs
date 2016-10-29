@@ -3,8 +3,7 @@ name: Types
 ---
 # Types
 
-This page is an appendix of [v1](v1), showing the types most commonly used in
-the API, like "user" and such.
+This page is an appendix of [v1](v1), showing the types most commonly used in the API, like "user" and such. "..." in a field's value means it's obvious, and no explanation is required.
 
 <!-- toc -->
 
@@ -21,9 +20,9 @@ Field name   | Type      | Value
 `id`         | `int`     | The ID of the user.
 `username`   | `string`  | The username.
 `username_aka` | `string`| Alternative username of the user (cannot be used for login).
-`registered_on` | [time](appendix#time) | Date and time of when the user signed up on Ripple.
+`registered_on` | [time] | Date and time of when the user signed up on Ripple.
 `privileges` | `uint64`  | Privileges of the user.
-`latest_activity` | [time](appendix#time) | Date and time of when the user was last active on Ripple.
+`latest_activity` | [time] | Date and time of when the user was last active on Ripple.
 `country`    | `string`  | 2-letter country code, ISO 3166
 
 ```json
@@ -81,3 +80,54 @@ Field name   | Type      | Value
     "icon": "fa-code"
 }
 ```
+
+## Beatmap
+
+Field name   | Type      | Value
+-------------|-----------|-----------------------------------------------------------------
+`beatmap_id` | `int`     | ...
+`beatmapset_id` | `int`  | ...
+`beatmap_md5`| `string`  | Beatmap file MD5 hash
+`song_name`  | `string`  | Name of the song (includes diff name, artist and title)
+`ar`         | `float32` | Approach Rate
+`od`         | `float32` | Overall Difficulty
+`difficulty` | `float64` | Difficulty in osu! standard
+`difficulty2`| [Difficulty](#difficulty) | Difficulty in all game modes
+`max_combo`  | `int`     | Maximum combo achievable on the beatmap
+`hit_length` | `int`     | Hit length of the beatmap (from the osu! API)
+`ranked`     | `int`     | Ranked status, see [rankedStatuses.py](https://git.zxq.co/ripple/lets/src/master/constants/rankedStatuses.py)
+`ranked_status_frozen` | `int` | There's a reason why it's an int, so store it as an int and not a bool, though of course `1` means it's frozen and `0` means it's not. If this is true, it means that the ranked status cannot change (beatmap ranked manually)
+`latest_update` | [time] | datetime of when the beatmap was last updated **from the osu! API**
+
+## Difficulty
+
+Field name   | Type      | Value
+-------------|-----------|-----------------------------------------------------------------
+`std`        | `float64` | Difficulty for osu! standard.
+`taiko`      | `float64` | Difficulty for Taiko.
+`ctb`        | `float64` | Difficulty for Catch the Beat.
+`mania`      | `float64` | Difficulty for osu!mania.
+
+## Score
+
+Field name   | Type      | Value
+-------------|-----------|-----------------------------------------------------------------
+`id`         | `int`     | The score ID.
+`beatmap_md5`| `string`  | Beatmap MD5 hash.
+`score`      | `int64`   | Score obtained playing the beatmap.
+`max_combo`  | `int`     | Maximum combo achieved in the beatmap.
+`full_combo` | `bool`    | Whether the score was a full combo or not.
+`mods`       | `int`     | Enabled mods.
+`count_300`  | `int`     | Number of 300s hit.
+`count_100`  | `int`     | Number of 100s hit.
+`count_50`   | `int`     | Number of 50s hit.
+`count_geki` | `int`     | Number of gekis hit.
+`count_katu` | `int`     | Number of katus hit.
+`count_miss` | `int`     | Number of misses.
+`time`       | [time]    | Datetime of when the score was achieved.
+`play_mode`  | `int`     | Mode in which this score was achieved.
+`accuracy`   | `float64` | Accuracy of the score.
+`pp`         | `float32` | PP achieved with the score.
+`completed`  | `int`     | Whether the beatmap was completed or not (3 or 2)
+
+[time]: appendix#time
