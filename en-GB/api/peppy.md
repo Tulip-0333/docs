@@ -50,18 +50,15 @@ Implemented requests:
 
 <!-- toc -->
 
-  * [User](#user)
-    * [GET /get_user](#get-%2Fget_user)
-  * [User scores](#user-scores)
-    * [GET /get_user_recent](#get-%2Fget_user_recent)
-    * [GET /get_user_best](#get-%2Fget_user_best)
-  * [Scores](#scores)
-    * [GET /get_scores](#get-%2Fget_scores)
-  * [Beatmaps](#beatmaps)
-    * [GET /get_beatmaps](#get-%2Fget_beatmaps)
-* [Notes](#notes)
-  * [Modes IDs](#modes-ids)
-  * [Ranked statuses on Ripple](#ranked-statuses-on-ripple)
+* [User](#user)
+  * [GET /get_user](#get-%2Fget_user)
+* [User scores](#user-scores)
+  * [GET /get_user_recent](#get-%2Fget_user_recent)
+  * [GET /get_user_best](#get-%2Fget_user_best)
+* [Scores](#scores)
+  * [GET /get_scores](#get-%2Fget_scores)
+* [Beatmaps](#beatmaps)
+  * [GET /get_beatmaps](#get-%2Fget_beatmaps)
 
 <!-- tocstop -->
 
@@ -711,29 +708,4 @@ Vary: Accept-Encoding
         "version": "HARD RAVE"
     }
 ]
-```
-
-# Notes
-
-## Modes IDs
-
-```
-osu! standard  = 0
-Taiko          = 1
-Catch the Beat = 2
-osu!mania      = 4
-```
-
-## Ranked statuses on Ripple
-
-Taken from [here](https://git.zxq.co/ripple/lets/src/master/constants/rankedStatuses.py).
-This does not apply to the peppyapi.
-
-```
-Pending      = 0
-Needs update = 1
-Ranked       = 2
-Approved     = 3
-Qualified    = 4
-Loved        = 5
 ```
