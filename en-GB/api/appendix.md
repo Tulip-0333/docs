@@ -152,5 +152,5 @@ Play style sometimes appears in the stats of an user. The bitwise enum for it ca
 osu! standard  = 0
 Taiko          = 1
 Catch the Beat = 2
-osu!mania      = 4
+osu!mania      = 3
 ```
