@@ -61,10 +61,23 @@ Basically the same as `[center]`. They respectively left-align or right-align te
 
 ## `container`
 
-A container allows to put some text or youtube video or image in a restricted width.
+A container allows to put some text or youtube video or image in a restricted width, or a container with other attributes.
+
+Parameters | Description
+-----------|------------------------------
+`width`    | Width of the container, in pixels.
+`compact`  | Enter any value to enable (e.g. `compact=1`). To put images so that they will arrange nicely together to create a sort of "image map", for instance using the [banner maker](https://www.osustuff.org/banner-maker)
+`center`   | Enter any value to enable (e.g. `center=1`). Image centering
 
 ```bash
 [container width=150]150px wide container![/youtube]
+```
+
+```bash
+[center][container width=616 compact=1 center=1][img]https://www.osustuff.org/img/imageslice/2016-11-24/6163/33325.png[/img]
+[img]https://www.osustuff.org/img/imageslice/2016-11-24/6163/33326.png[/img][url=https://google.com][img]https://www.osustuff.org/img/imageslice/2016-11-24/6163/33327.png[/img][/url][img]https://www.osustuff.org/img/imageslice/2016-11-24/6163/33328.png[/img]
+[img]https://www.osustuff.org/img/imageslice/2016-11-24/6163/33329.png[/img]
+[/container][/center]
 ```
 
 ## `hr`
