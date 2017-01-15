@@ -14,10 +14,10 @@ CheeseGull is the successor of [mirror](https://zxq.co/ripple/mirror), and it is
   * [Time](#time)
 * [Types](#types)
   * [Beatmap](#beatmap)
-* [BeatmapSet](#beatmapset)
+  * [BeatmapSet](#beatmapset)
 * [Beatmaps and sets](#beatmaps-and-sets)
-  * [GET /api/b/:id](#get-%2Fapi%2Fb%2Fid)
-  * [GET /api/s/:id](#get-%2Fapi%2Fs%2Fid)
+  * [GET /api/b/:id](#get-%2Fapi%2Fb%2F%3Aid)
+  * [GET /api/s/:id](#get-%2Fapi%2Fs%2F%3Aid)
 
 <!-- tocstop -->
 
@@ -73,7 +73,7 @@ Field name         | Type    | Description
 `MaxCombo`         | `int`   | Maximum combo someone can achieve.
 `DifficultyRating` | `float64` | Star difficulty rating of the map. If this is an osu! standard map, this is the star rating for osu! standard. There's no way to get the star rating for other modes in converted beatmaps.
 
-## BeatmapSet
+### BeatmapSet
 
 Field name          | Type     | Description
 --------------------|----------|------------------

@@ -26,7 +26,7 @@ function readRecursive(dir, callback) {
 
 function slugger(w) {
 	return uslug(w, {
-		allowedChars: "-_~/()"
+		allowedChars: ":-_~/()"
 	})
 }
 
