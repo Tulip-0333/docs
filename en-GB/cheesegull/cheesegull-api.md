@@ -9,6 +9,18 @@ CheeseGull is the successor of [mirror](https://zxq.co/ripple/mirror), and it is
 
 <!-- toc -->
 
+* [Topics](#topics)
+  * [Security Key](#security-key)
+  * [Time](#time)
+* [Types](#types)
+  * [Beatmap](#beatmap)
+* [BeatmapSet](#beatmapset)
+* [Beatmaps and sets](#beatmaps-and-sets)
+  * [GET /api/b/:id](#get-%2Fapi%2Fb%2Fid)
+  * [GET /api/s/:id](#get-%2Fapi%2Fs%2Fid)
+
+<!-- tocstop -->
+
 ## Topics
 
 ### Security Key
