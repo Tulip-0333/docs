@@ -12,12 +12,18 @@ CheeseGull is the successor of [mirror](https://zxq.co/ripple/mirror), and it is
 * [Topics](#topics)
   * [Security Key](#security-key)
   * [Time](#time)
+  * [Ok-Message response](#ok-message-response)
+  * [Arrays](#arrays)
 * [Types](#types)
   * [Beatmap](#beatmap)
   * [BeatmapSet](#beatmapset)
 * [Beatmaps and sets](#beatmaps-and-sets)
   * [GET /api/b/:id](#get-%2Fapi%2Fb%2F%3Aid)
   * [GET /api/s/:id](#get-%2Fapi%2Fs%2F%3Aid)
+* [Search](#search)
+  * [GET /api/search](#get-%2Fapi%2Fsearch)
+* [Beatmap requesting](#beatmap-requesting)
+  * [POST /api/request](#post-%2Fapi%2Frequest)
 
 <!-- tocstop -->
 
@@ -49,6 +55,14 @@ Time is passed as JSON strings, and formatted using RFC3339. This makes it super
 > new Date("2016-10-28T21:10:55+02:00")
 Fri Oct 28 2016 21:10:55 GMT+0200 (CEST)
 ```
+
+### Ok-Message response
+
+In the new API methods (those that are not /s/:id or /b/:id), an `Ok` field in the JSON struct is always passed, to specify if the call was successful or not. Of course, if it's successfull it will be `true`, if not it will be `false`. If it's false, a `Message` will also be returned, saying what the error was in a human-readable way. The only field guaranteed to always be there when `Ok` is false is `Message`. 
+
+### Arrays
+
+This is a very short topic to basically say Arrays (which are specified when talking about types with a `[]` in front of the type they array, e.g. `[]BeatmapSet`) can be `null`.
 
 ## Types
 
@@ -209,4 +223,444 @@ Content-Type: application/json; charset=UTF-8
 Date: Sun, 15 Jan 2017 21:11:54 GMT
 
 null
+```
+
+## Search
+
+### GET /api/search
+
+Returns beatmaps based on the searched query and details passed.
+
+#### GET Parameters
+
+- `amount`: amount of results to return. Defaults to 50. Can be a value from 1 to 100.
+- `offset`: offset of the results. In a classic pagination system, this would be  `amount * (page - 1)`, assuming page starts from 1.
+- `status`: beatmap ranked status. If not passed, all statuses are good. Multiple statuses can be passed to specify that multiple statuses are accepted.
+- `mode`: game mode. If not passed, all game modes are good. Multiple game modes can be passed to specify that multiple game modes are accepted.
+- `query`: the search query.
+
+#### Response
+
+Returns an [Ok-Message Response](#ok-message-response), with a `Sets` field that is a [`[]BeatmapSet`](#beatmapset).
+
+#### Examples
+
+```json
+$ http 'http://test/api/search?amount=5'
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 16 Jan 2017 17:08:48 GMT
+Transfer-Encoding: chunked
+
+{
+    "Ok": true,
+    "Sets": [
+        {
+            "ApprovedDate": "2007-10-29T01:55:27Z",
+            "Artist": "Lisa Locheed",
+            "ChildrenBeatmaps": [
+                283,
+                554242
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 5,
+                    "BPM": 136.34,
+                    "BeatmapID": 283,
+                    "CS": 5,
+                    "DiffName": "Normal",
+                    "DifficultyRating": 2.381,
+                    "FileMD5": "97f3780beee23dcac25fb58d2a31f103",
+                    "HP": 5,
+                    "HitLength": 0,
+                    "MaxCombo": 389,
+                    "Mode": 0,
+                    "OD": 5,
+                    "ParentSetID": 126,
+                    "Passcount": 202,
+                    "Playcount": 828,
+                    "TotalLength": 206
+                },
+                {
+                    "AR": 2,
+                    "BPM": 136.34,
+                    "BeatmapID": 554242,
+                    "CS": 5,
+                    "DiffName": "Easy",
+                    "DifficultyRating": 1.62103,
+                    "FileMD5": "8904a3ed9ac76644a6f4356669540c04",
+                    "HP": 2,
+                    "HitLength": 0,
+                    "MaxCombo": 289,
+                    "Mode": 0,
+                    "OD": 2,
+                    "ParentSetID": 126,
+                    "Passcount": 556,
+                    "Playcount": 1541,
+                    "TotalLength": 208
+                }
+            ],
+            "Creator": "Bonesnake",
+            "Favourites": 7,
+            "Genre": 5,
+            "HasVideo": false,
+            "Language": 2,
+            "LastChecked": "2017-01-15T20:25:02Z",
+            "LastUpdate": "2014-12-03T23:22:22Z",
+            "RankedStatus": 1,
+            "SetID": 126,
+            "Source": "",
+            "Tags": "",
+            "Title": "The Raccoons - Run with us"
+        },
+        {
+            "ApprovedDate": "2007-12-17T02:00:57Z",
+            "Artist": "Die Aerzte",
+            "ChildrenBeatmaps": [
+                2199,
+                2200
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 5,
+                    "BPM": 105.498,
+                    "BeatmapID": 2199,
+                    "CS": 3,
+                    "DiffName": "Normal",
+                    "DifficultyRating": 2.21638,
+                    "FileMD5": "1e6042070f136c76d05f702bfec84e08",
+                    "HP": 5,
+                    "HitLength": 0,
+                    "MaxCombo": 230,
+                    "Mode": 0,
+                    "OD": 5,
+                    "ParentSetID": 453,
+                    "Passcount": 6614,
+                    "Playcount": 15949,
+                    "TotalLength": 118
+                },
+                {
+                    "AR": 7,
+                    "BPM": 105.498,
+                    "BeatmapID": 2200,
+                    "CS": 3,
+                    "DiffName": "Hard",
+                    "DifficultyRating": 2.36691,
+                    "FileMD5": "1f80645c63012adb4aa4acf09da1ae78",
+                    "HP": 7,
+                    "HitLength": 0,
+                    "MaxCombo": 372,
+                    "Mode": 0,
+                    "OD": 7,
+                    "ParentSetID": 453,
+                    "Passcount": 5032,
+                    "Playcount": 19301,
+                    "TotalLength": 172
+                }
+            ],
+            "Creator": "Fox",
+            "Favourites": 38,
+            "Genre": 4,
+            "HasVideo": false,
+            "Language": 8,
+            "LastChecked": "2017-01-15T20:28:46Z",
+            "LastUpdate": "2013-03-01T11:21:02Z",
+            "RankedStatus": 1,
+            "SetID": 453,
+            "Source": "",
+            "Tags": "",
+            "Title": "Junge"
+        },
+        {
+            "ApprovedDate": "2008-04-21T23:30:01Z",
+            "Artist": "AKITO",
+            "ChildrenBeatmaps": [
+                261
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 6,
+                    "BPM": 138,
+                    "BeatmapID": 261,
+                    "CS": 6,
+                    "DiffName": "Hard",
+                    "DifficultyRating": 2.74412,
+                    "FileMD5": "b9bb0473a2a0ba7fcbbf68678b23c115",
+                    "HP": 6,
+                    "HitLength": 0,
+                    "MaxCombo": 255,
+                    "Mode": 0,
+                    "OD": 6,
+                    "ParentSetID": 119,
+                    "Passcount": 42623,
+                    "Playcount": 197574,
+                    "TotalLength": 101
+                }
+            ],
+            "Creator": "Kharl",
+            "Favourites": 145,
+            "Genre": 2,
+            "HasVideo": true,
+            "Language": 5,
+            "LastChecked": "2017-01-15T20:24:59Z",
+            "LastUpdate": "2009-04-06T05:33:38Z",
+            "RankedStatus": 1,
+            "SetID": 119,
+            "Source": "DJMAX",
+            "Tags": "J-Trance Pasonia",
+            "Title": "Sakura Kagetsu"
+        }
+    ]
+}
+```
+
+```json
+$ http 'http://test/api/search?amount=5&query=meme'
+HTTP/1.1 200 OK
+Content-Length: 24
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 16 Jan 2017 17:10:20 GMT
+
+{
+    "Ok": true,
+    "Sets": null
+}
+```
+
+```json
+$ http 'http://test/api/search?amount=5&status=1&status=-2'
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 16 Jan 2017 17:39:42 GMT
+Transfer-Encoding: chunked
+
+{
+    "Ok": true,
+    "Sets": [
+        {
+            "ApprovedDate": "2007-10-29T01:55:27Z",
+            "Artist": "Lisa Locheed",
+            "ChildrenBeatmaps": [
+                283,
+                554242
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 5,
+                    "BPM": 136.34,
+                    "BeatmapID": 283,
+                    "CS": 5,
+                    "DiffName": "Normal",
+                    "DifficultyRating": 2.3809981,
+                    "FileMD5": "97f3780beee23dcac25fb58d2a31f103",
+                    "HP": 5,
+                    "HitLength": 0,
+                    "MaxCombo": 389,
+                    "Mode": 0,
+                    "OD": 5,
+                    "ParentSetID": 126,
+                    "Passcount": 202,
+                    "Playcount": 828,
+                    "TotalLength": 206
+                },
+                {
+                    "AR": 2,
+                    "BPM": 136.34,
+                    "BeatmapID": 554242,
+                    "CS": 5,
+                    "DiffName": "Easy",
+                    "DifficultyRating": 1.6210282,
+                    "FileMD5": "8904a3ed9ac76644a6f4356669540c04",
+                    "HP": 2,
+                    "HitLength": 0,
+                    "MaxCombo": 289,
+                    "Mode": 0,
+                    "OD": 2,
+                    "ParentSetID": 126,
+                    "Passcount": 556,
+                    "Playcount": 1541,
+                    "TotalLength": 208
+                }
+            ],
+            "Creator": "Bonesnake",
+            "Favourites": 7,
+            "Genre": 5,
+            "HasVideo": false,
+            "Language": 2,
+            "LastChecked": "2017-01-15T20:25:02Z",
+            "LastUpdate": "2014-12-03T23:22:22Z",
+            "RankedStatus": 1,
+            "SetID": 126,
+            "Source": "",
+            "Tags": "",
+            "Title": "The Raccoons - Run with us"
+        },
+        {
+            "ApprovedDate": "2007-12-17T02:00:57Z",
+            "Artist": "Die Aerzte",
+            "ChildrenBeatmaps": [
+                2199,
+                2200
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 5,
+                    "BPM": 105.498,
+                    "BeatmapID": 2199,
+                    "CS": 3,
+                    "DiffName": "Normal",
+                    "DifficultyRating": 2.2163832,
+                    "FileMD5": "1e6042070f136c76d05f702bfec84e08",
+                    "HP": 5,
+                    "HitLength": 0,
+                    "MaxCombo": 230,
+                    "Mode": 0,
+                    "OD": 5,
+                    "ParentSetID": 453,
+                    "Passcount": 6614,
+                    "Playcount": 15949,
+                    "TotalLength": 118
+                },
+                {
+                    "AR": 7,
+                    "BPM": 105.498,
+                    "BeatmapID": 2200,
+                    "CS": 3,
+                    "DiffName": "Hard",
+                    "DifficultyRating": 2.3669055,
+                    "FileMD5": "1f80645c63012adb4aa4acf09da1ae78",
+                    "HP": 7,
+                    "HitLength": 0,
+                    "MaxCombo": 372,
+                    "Mode": 0,
+                    "OD": 7,
+                    "ParentSetID": 453,
+                    "Passcount": 5032,
+                    "Playcount": 19301,
+                    "TotalLength": 172
+                }
+            ],
+            "Creator": "Fox",
+            "Favourites": 38,
+            "Genre": 4,
+            "HasVideo": false,
+            "Language": 8,
+            "LastChecked": "2017-01-15T20:28:46Z",
+            "LastUpdate": "2013-03-01T11:21:02Z",
+            "RankedStatus": 1,
+            "SetID": 453,
+            "Source": "",
+            "Tags": "",
+            "Title": "Junge"
+        },
+        {
+            "ApprovedDate": "2008-04-21T23:30:01Z",
+            "Artist": "AKITO",
+            "ChildrenBeatmaps": [
+                262
+            ],
+            "ChildrenBeatmaps2": [
+                {
+                    "AR": 3,
+                    "BPM": 138,
+                    "BeatmapID": 262,
+                    "CS": 5,
+                    "DiffName": "Normal",
+                    "DifficultyRating": 2.0250409,
+                    "FileMD5": "74aa0c2284ddf57f7b27823bbdb2fd16",
+                    "HP": 4,
+                    "HitLength": 0,
+                    "MaxCombo": 262,
+                    "Mode": 0,
+                    "OD": 3,
+                    "ParentSetID": 119,
+                    "Passcount": 22378,
+                    "Playcount": 83281,
+                    "TotalLength": 101
+                }
+            ],
+            "Creator": "Kharl",
+            "Favourites": 145,
+            "Genre": 2,
+            "HasVideo": true,
+            "Language": 5,
+            "LastChecked": "2017-01-15T20:24:59Z",
+            "LastUpdate": "2009-04-06T05:33:38Z",
+            "RankedStatus": 1,
+            "SetID": 119,
+            "Source": "DJMAX",
+            "Tags": "J-Trance Pasonia",
+            "Title": "Sakura Kagetsu"
+        }
+    ]
+}
+```
+
+## Beatmap requesting
+
+### POST /api/request
+
+[Requires Security Key.](#security-key)
+
+Allows to force an update of a certain beatmap. This is a fire-and-forget method: once you call it, the beatmap may get queued, however you can't really know for sure. If a CheeseGull server is listening and the beatmap exists, then yes, the download is indeed queued.
+
+#### POST Form parameters
+
+You can pass the beatmap set to request throught the POST form value `set_id`.
+
+#### Response
+
+Returns an [Ok-Message Response](#ok-message-response), with a `BeatmapSet` containing a [`*BeatmapSet`](#beatmapset) (null-able).
+
+#### Examples
+
+```json
+$ http --form POST 'http://test/api/request' Authorization:sVmEkaZpEGgdjYVyuIGxWrIFN set_id=1
+HTTP/1.1 200 OK
+Content-Length: 625
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 16 Jan 2017 17:49:50 GMT
+
+{
+    "BeatmapSet": {
+        "ApprovedDate": "2007-10-07T01:46:31Z",
+        "Artist": "Kenji Ninuma",
+        "ChildrenBeatmaps": [
+            75
+        ],
+        "ChildrenBeatmaps2": [
+            {
+                "AR": 6,
+                "BPM": 119.999,
+                "BeatmapID": 75,
+                "CS": 4,
+                "DiffName": "Normal",
+                "DifficultyRating": 2.2919927,
+                "FileMD5": "a5b99395a42bd55bc5eb1d2411cbdf8b",
+                "HP": 6,
+                "HitLength": 0,
+                "MaxCombo": 314,
+                "Mode": 0,
+                "OD": 6,
+                "ParentSetID": 1,
+                "Passcount": 31459,
+                "Playcount": 231169,
+                "TotalLength": 108
+            }
+        ],
+        "Creator": "peppy",
+        "Favourites": 171,
+        "Genre": 2,
+        "HasVideo": false,
+        "Language": 3,
+        "LastChecked": "2017-01-15T19:25:03Z",
+        "LastUpdate": "2007-10-07T01:46:31Z",
+        "RankedStatus": 1,
+        "SetID": 1,
+        "Source": "",
+        "Tags": "katamari",
+        "Title": "DISCO PRINCE"
+    },
+    "Ok": true
+}
 ```
