@@ -12,7 +12,6 @@ https://storage.ripple.moe/levbod
 
 ## Table of contents
 
-<!-- toc -->
 - General API Info
 	- [API Response format](#api-response-format)
 	- [API Response status codes](#api-response-status-codes)
@@ -26,8 +25,6 @@ https://storage.ripple.moe/levbod
 		- [GET /beatmap](#get-%2Fbeatmap)
 		- [GET /beatmapset](#get-%2Fbeatmapset)
 	
-<!-- tocstop -->
-
 ---
 
 ## API Response format
