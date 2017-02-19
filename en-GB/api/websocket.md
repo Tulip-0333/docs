@@ -1,3 +1,6 @@
+---
+name: Websocket API
+---
 # Websocket API
 
 > This is currently very beta. It may change anytime.
