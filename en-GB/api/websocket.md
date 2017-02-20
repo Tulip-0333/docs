@@ -15,7 +15,7 @@ Everybody wins!
 To start a connection, you must connect to this websocket URL:
 
 ```
-wss://ripple.moe/api/v1/ws
+wss://api.ripple.moe/api/v1/ws
 ```
 
 Once you're connected, you should get a `{"type":"connected"}` to say you're
