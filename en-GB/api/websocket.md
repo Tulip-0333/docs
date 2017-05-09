@@ -21,6 +21,11 @@ wss://api.ripple.moe/api/v1/ws
 Once you're connected, you should get a `{"type":"connected"}` to say you're
 connected to the websocket, and you can do all of your magic.
 
+If you want to see an example of an application done using websockets, you can
+take a look at [ppstream](https://thehowl.github.io/ppstream/). It's pretty
+straightforward, and is about 113 lines of JavaScript. You can take a look at
+the source code [here](https://github.com/thehowl/ppstream/blob/gh-pages/index.html#L55-L168).
+
 ## Table of Contents
 
 <!-- toc -->
