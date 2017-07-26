@@ -35,10 +35,19 @@ the source code [here](https://github.com/thehowl/ppstream/blob/gh-pages/index.h
 <!-- toc -->
 
 * [Message structure](#message-structure)
-* [Subscribe to score submission](#subscribe-to-score-submission)
+* [Errors](#errors)
+* [Identify](#identify)
   * [Data structure](#data-structure)
   * [Response](#response)
   * [Example](#example)
+* [Subscribe to score submission](#subscribe-to-score-submission)
+  * [Data structure](#data-structure-1)
+  * [Response](#response-1)
+  * [Example](#example-1)
+* [Set Restricted Visibility](#set-restricted-visibility)
+  * [Data structure](#data-structure-2)
+  * [Response](#response-2)
+  * [Example](#example-2)
 
 <!-- tocstop -->
 
