@@ -53,6 +53,7 @@ Field name   | Type      | Value
 `accuracy`   | `float64` | Overall accuracy of the user.
 `pp`         | `float64` | Weighted PP for this user in this mode. (Currently just an int, though it will get changed to float64 so consider it as a float, not an int)
 `global_leaderboard_rank` | `int` | Position in the leaderboard for this user.
+`country_leaderboard_rank` | `int` | Position in the country leaderboard for this user in their country.
 
 ```json
 {
@@ -64,7 +65,8 @@ Field name   | Type      | Value
     "level": 61.17723833993767,
     "accuracy": 97.659744,
     "pp": 2147,
-    "global_leaderboard_rank": 1418
+    "global_leaderboard_rank": 1418,
+    "country_leaderboard_rank": 1
 }
 ```
 
