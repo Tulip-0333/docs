@@ -131,6 +131,7 @@ Field name   | Type      | Value
 `play_mode`  | `int`     | Mode in which this score was achieved.
 `accuracy`   | `float64` | Accuracy of the score.
 `pp`         | `float32` | PP achieved with the score.
+`rank`       | `string`  | In-game rank of the score (S, A, SS, SSH...).
 `completed`  | `int`     | Whether the beatmap was completed or not (3 or 2)
 
 [time]: appendix#time
