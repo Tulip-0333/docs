@@ -85,6 +85,14 @@ Or:
 }
 ```
 
+## Errors
+
+Message type       | Explanation
+-------------------|------------------------------------------------------------
+`invalid_message_type` | The message sent is invalid. It contains either malformed JSON, a non-existing `type`, or was sent incorrectly.
+`unexpected_error` | Equivalent of an HTTP 500. An error occurred and the server was unable to fulfill your request.
+`not_found`        | Equivalent of an HTTP 404. The resource requested could not be found. For instance, in Identify this means the token doesn't exist.
+
 ## Identify
 
 States the token of the client, so that requests for further information may be
@@ -162,3 +170,5 @@ will be broadcasted.
 < {"type":"new_score","data":{"id":1550552,"beatmap_md5":"e714d7a3188e4a44ed018886cbdc35ad","score":2911530,"max_combo":283,"full_combo":false,"mods":0,"count_300":347,"count_100":36,"count_50":3,"count_geki":63,"count_katu":14,"count_miss":6,"time":"2017-02-19T19:45:09+01:00","play_mode":0,"accuracy":91.70918,"pp":0,"completed":2,"user_id":13045}}
 < {"type":"new_score","data":{"id":1550553,"beatmap_md5":"91cbc22713457f02e1b3a5fdcd9764a9","score":980738,"max_combo":588,"full_combo":true,"mods":0,"count_300":52,"count_100":0,"count_50":0,"count_geki":179,"count_katu":6,"count_miss":0,"time":"2017-02-19T19:45:09+01:00","play_mode":3,"accuracy":99.15612,"pp":20.51701,"completed":3,"user_id":4238}}
 ```
+
+## Set Restricted Visibility
