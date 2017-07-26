@@ -15,6 +15,7 @@ Currently no API clients are available, however they are planned for Go and node
 * [Stability](#stability)
 * [Authorization](#authorization)
 * [Privileges](#privileges)
+* [OAuth](#oauth)
 * [404](#404)
 * [Parameters](#parameters)
 * [Arrays](#arrays)
@@ -42,7 +43,7 @@ This API release is still in major version 0. Please note that none of the follo
 
 ## Authorization
 
-To perform certain actions on the Ripple API, you'll need a token. A token can be retrieved through the API itself using the method POST /tokens (documented afterwards). This is currently the only method, please note, though, that oAuth is guaranteed to be implemented by the API stable release (1.0.0), and also this method will disappear as soon as it's possible to create tokens from the website itself with a simple click. Applications made before the API stable release should be prepared to accept the change of functionality in the API, while we are still in the major version 0.
+To perform certain actions on the Ripple API, you'll need a token. A token can be requested through the Ripple website at the following URL: https://ripple.moe/dev/tokens.
 
 When required, the token can be passed (in order of priority):
 
@@ -52,6 +53,10 @@ When required, the token can be passed (in order of priority):
 * With the cookie `rt`
 
 A token SHOULD match the regular expression `^[0-9a-f]{32}$`.
+
+Please note that you can not use an OAuth bearer token the same way as a regular
+token, in order to access the API with a bearer token you'll need to pass it in
+the `Authorization` header, prefixed by `Bearer `.
 
 ## Privileges
 
@@ -78,6 +83,38 @@ const (
 In case you don't know Go: PrivilegeReadDEPRECATED is `1 << 0` (1), PrivilegeReadConfidential `1 << 1` (2), PrivilegeWrite `1 << 2` (4), PrivilegeManageBadges `1 << 3` (8), and so on.
 
 Applications accessing public data, such as leaderboards, documentation files, user data, user scores will not require any privilege. They will not require any API token, for that matter (though the requests they can do will be highly limited). Either way, at the moment normal users can only request for ReadConfidential and Write. Combining privileges can be done with a bitwise OR: `PrivilegeWrite | PrivilegeReadConfidential` (= 5). If you want to test the API and always want to have the most of the privileges you can possibly have, requesting a token with a very high power of 2 minus one will basically enable all the privileges you're allowed to have. For instance, `1 << 31 - 1` (2147483647), which if you're not familiar with bit shifting, it essentially means `2^31 - 1`.
+
+## OAuth
+
+If you're developing a service and you want to identify users, you're likely
+gonna need to use OAuth. Ripple aims to follow the OAuth 2 RFCs as closely as
+possible; if you notice a discrepancy, don't hesitate to
+[create an issue](https://github.com/osuripple/api-features).
+
+At the moment OAuth has the scopes `read_confidential` and `write`. They match
+the privileges PrivilegeReadConfidential and PrivilegeWrite. To concatenate
+privileges, you need to join them with a space, [as defined in RFC6749](https://tools.ietf.org/html/rfc6749#section-3.3).
+
+The Ripple OAuth implementation does not make use of refresh tokens. Access
+tokens are valid until an user revokes it from the
+[Authorized applications page](https://ripple.moe/settings/authorized_applications),
+the application is deleted or the token is deleted through `POST /tokens/self/delete`.
+
+In order to register an OAuth application, you'll need to request it from
+the following page on the Ripple website: https://ripple.moe/dev/apps. Once you
+obtain your `client_id` and `client_secret`, you should be able to simply plug
+them in inside the OAuth 2 implementatin in your programming language, and using
+the following URLs:
+
+- Authorization URL: `https://ripple.moe/oauth/authorize`
+- Token URL: `https://ripple.moe/oauth/token`
+- Resource owner details: `https://ripple.moe/api/v1/ping`
+
+An example of an OAuth implementation can be seen on [GitHub](https://github.com/osuripple/oauth-example).
+
+Once you have obtained a token, you may access resources on the Ripple API on
+behalf of the user by passing the token in the `Authorization` HTTP header,
+prefixed by `Bearer`, followed by a space.
 
 ## 404
 
