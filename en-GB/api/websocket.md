@@ -85,6 +85,43 @@ Or:
 }
 ```
 
+## Identify
+
+States the token of the client, so that requests for further information may be
+requested.
+
+### Data structure
+
+JSON object containing the following fields:
+
+- `token`, `string`, the API token to be used to identify.
+- `is_bearer`, `bool`, set to true if the token comes from a login using OAuth.
+
+### Response
+
+It will trigger a response of type `identified`, containing some information
+about the user.
+
+```json
+{
+ "type": "identified",
+ "data": {
+  "id": 1009,
+  "username": "Howl",
+  "user_privileges": 1048575,
+  "token_privileges": 0,
+  "application_id": null
+ }
+}
+```
+
+### Example
+
+```json
+> {"type":"identify", "data": {"token": "dabb3a57b71ed2f92a08e9ee288b163d", "is_bearer": false}}
+< {"type":"identified","data":{"id":1009,"username":"Howl","user_privileges":1048575,"token_privileges":0,"application_id":null}}
+```
+
 ## Subscribe to score submission
 
 Subscribes to score submission on the specified users and on the specified game modes.
@@ -101,11 +138,11 @@ scores.
 
 ### Response
 
-Immediately, it will trigger a response to notify the client has been subscribed. (The following is very likely to change in the future)
+Immediately, it will trigger a response to notify the client has been subscribed.
 
 ```json
 {
-  "type": "subscribed",
+  "type": "subscribed_to_scores",
   "data": []
 }
 ```
