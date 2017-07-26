@@ -100,6 +100,8 @@ requested.
 
 ### Data structure
 
+Message type: `identify`
+
 JSON object containing the following fields:
 
 - `token`, `string`, the API token to be used to identify.
@@ -135,6 +137,8 @@ about the user.
 Subscribes to score submission on the specified users and on the specified game modes.
 
 ### Data structure
+
+Message type: `subscribe_scores`
 
 Array of objects with the following fields:
 
@@ -172,3 +176,36 @@ will be broadcasted.
 ```
 
 ## Set Restricted Visibility
+
+Through this message, you can set whether you want to see information (such as
+scores) pertaining to restricted users.
+
+Please note that this only works if you have identified yourself and you have
+the user privilege `AdminPrivilegeManageUsers`.
+
+### Data structure
+
+Message type: `set_restricted_visibility`.
+
+A boolean. Set to true if you want to see restricted users, false if you don't.
+If this command is not called, the default is always false.
+
+### Response
+
+A message of type `restricted_visibility_set`, containing as data the boolean,
+which should be the same to that of the `set_restricted_visibility` message,
+unless the condition specified in the introduction is not respected.
+
+```json
+{
+ "data": true,
+ "type": "restricted_visibility_set"
+}
+```
+
+### Example
+
+```json
+> {"type":"set_restricted_visibility", "data": true}
+< {"type":"restricted_visibility_set", "data": true}
+```
