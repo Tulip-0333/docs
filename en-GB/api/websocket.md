@@ -28,7 +28,7 @@ This will get a response with a message of type `"pong"`.
 If you want to see an example of an application done using websockets, you can
 take a look at [ppstream](https://thehowl.github.io/ppstream/). It's pretty
 straightforward, and is about 113 lines of JavaScript. You can take a look at
-the source code [here](https://github.com/thehowl/ppstream/blob/gh-pages/index.html#L55-L168).
+the source code [here](https://github.com/thehowl/ppstream/blob/gh-pages/index.html#L55-L171).
 
 ## Table of Contents
 
