@@ -10,20 +10,16 @@ To learn more about CheeseGull, read the [GitHub README](https://github.com/osur
 <!-- toc -->
 
 * [Topics](#topics)
-  * [Security Key](#security-key)
   * [Time](#time)
-  * [Ok-Message response](#ok-message-response)
   * [Arrays](#arrays)
 * [Types](#types)
   * [Beatmap](#beatmap)
-  * [BeatmapSet](#beatmapset)
+  * [Set](#set)
 * [Beatmaps and sets](#beatmaps-and-sets)
   * [GET /api/b/:id](#get-%2Fapi%2Fb%2F%3Aid)
   * [GET /api/s/:id](#get-%2Fapi%2Fs%2F%3Aid)
 * [Search](#search)
   * [GET /api/search](#get-%2Fapi%2Fsearch)
-* [Beatmap requesting](#beatmap-requesting)
-  * [POST /api/request](#post-%2Fapi%2Frequest)
 
 <!-- tocstop -->
 

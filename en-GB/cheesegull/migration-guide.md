@@ -1,7 +1,6 @@
 ---
 name: CheeseGull API migration guide
 ---
-
 # CheeseGull API migration guide
 
 On 2017-10-01, we changed our beatmap mirror from using CheeseGull v1 to using
