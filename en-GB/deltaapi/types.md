@@ -114,7 +114,7 @@ Field name   | Type | Value
 `mods` | `number`  | Currently selected [Mods]. (†)
 `text` | `str` | Additional text displayed in the "user panel" in-game. When playing, it contains the name of the song.
 
-* **†:** Always present, but relevant only when playing/multiplaying/editing/etc. Is 0 if it's not relevant for the current action of if it's not set.
+* **†:** Always present, but relevant only when playing/multiplaying/editing/etc. It's `0` or `""` (empty string) if it's not relevant for the current action or if it's was not set by the client.
 
 ```json
 {
