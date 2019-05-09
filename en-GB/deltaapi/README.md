@@ -1,3 +1,3 @@
 ---
-name: New Bancho API
+name: Delta API
 ---
