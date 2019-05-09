@@ -1,3 +1,3 @@
 ---
-name: Bancho API
+name: Bancho API (deprecated!)
 ---
