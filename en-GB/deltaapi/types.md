@@ -23,7 +23,7 @@ Field name   | Type      | Value
 `name` | `string` | Name of the channel. Multiplayer channels have the following name: `#multi_{match_id}`. Spectator channels have the following name:  `#spect_{host_user_id}`.
 `public_read` | `bool` | Whether this channel is publicly accessible (can be joined by non-admins).
 `public_write` | `bool` | Whether normal users can send messages to this channel. This is different than `moderated`! The only channel that has `public_write = true` as of right now is `#announce`.
-`temporary` | `bool` | Whether the channel is temporary or not. Temporary channel are special channels that get disposed when all users leave it. `#spect_*` and `#multi_*` channels are temporary channels.
+`temporary` | `bool` | Whether the channel is temporary or not. Temporary channel are special channels that get disposed on particular conditions. `#spect_*` and `#multi_*` channels are temporary channels. `#spectator` channels get disposed when all spectators stop spectating, `#multiplayer` channels get disposed when the multiplayer match is disposed.
 
 ```json
 {
@@ -40,14 +40,7 @@ Field name   | Type      | Value
 
 ## Client
 
-The following fields are present ONLY if the client is a game client:
-
-Field name   | Type      | Value
--------------|-----------|-----------------------------------------------------------------
-`action`| [Action](#action)  | Current action
-`bancho_privileges`| `integer` | [Bancho Privileges](appendix#bancho-privileges) of this client
-
-The following fields always present:
+The following fields are present for Game clients, IRC clients and Web socket clients:
 
 Field name   | Type      | Value
 -------------|-----------|-----------------------------------------------------------------
@@ -55,9 +48,34 @@ Field name   | Type      | Value
 `location` | `null`;`object` | Client's [Location](#location), or `null` if it was disabled by the client.
 `privileges` | `integer` | The user privileges (from the database)
 `silence_end_time` | `null`;`integer` | UNIX timestamp of when the silence of this user expires. `null` if the client is not silenced. Please note that this field may take a moment to update from the correct value in the database if the user has just been silenced.
-`type` | `integer` | [Client type](#appendix#client-types) (tldr: `0 = game; 1 = irc`)
+`type` | `integer` | [Client type](#appendix#client-types) (tldr: `0 = game; 1 = irc; 2 = fake; 3 = websocket;`)
 `user_id` | `integer` | 
 `username` | `string` | **Non-safe** username
+
+---
+
+The following additional fields are present ONLY if the client is a game client:
+
+Field name   | Type      | Value
+-------------|-----------|-----------------------------------------------------------------
+`action`| [Action](#action)  | Current action
+`bancho_privileges`| `integer` | [Bancho Privileges](appendix#bancho-privileges) of this client
+
+---
+
+A Fake client has ONLY THE FOLLOWING fields:
+
+Field name   | Type      | Value
+-------------|-----------|-----------------------------------------------------------------
+`type`| `integer`  | Always `2`.
+`user_id`| `integer` | User ID of this Fake client
+`username`| `integer`  | Username of the Fake Client
+
+_[More info on Fake clients](appendix#†%3A-a-note-on-fake-clients)_.
+
+tldr: you'll almost never see Fake clients. Only some FokaBot messages in the websocket API will be sent by a Fake client. You'll never see a fake client in the HTTP API.
+
+---
 
 
 ```json

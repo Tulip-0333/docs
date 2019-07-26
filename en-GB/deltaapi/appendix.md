@@ -19,9 +19,12 @@ If you'd want to see something implemented in the API, you can open an issue at 
 * [Pretty printing](#parameters)
 * [Response format](#response-format)
 * [Arrays](#arrays)
+* [Boolean strings](#boolean-strings)
+* [Usernames](#usernames)
 * Enums
   * [Modes IDs](#modes-ids)
   * [Client types](#client-types)
+      * [A note on Fake clients](#†%3A-a-note-on-fake-clients)
   * [Actions](#actions)
   * [Bancho Privileges](#bancho-privileges)
   * [Multiplayer scoring types](#multiplayer-scoring-types)
@@ -60,7 +63,7 @@ In the Delta API, there's the concept of API Identifiers: strings identifiying t
 Note that **the API Identifiers are not the tokens used by the Bancho Protocol to authenticate game clients**, they're different and API Identifiers can only used in the Delta API. API Identifiers are needed because a user may be connected from multiple clients at the same time (eg: two IRC clients and one game client), and sometimes you may want to do something on a specific client, not on all clients that belong to a specific user.
 
 ## Multiplayer match IDs
-A "Multiplayer Match" is a the multiplayer "room". Each match is identified in the API by an ID. Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match.  
+A "Multiplayer Match" is a the multiplayer "room". Each match is identified in the API by an ID. Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match through the Delta API.   
 For the courious out there, the vinse ID is calculated like this:  
 ```python
 (u // (60 * 15)) << 32 | id
@@ -79,10 +82,10 @@ In GET requests, all parameters are passed through the querystring, while in POS
 ## Pretty printing
 You can pass the `pretty=1` GET parameter to pretty-print the JSON response:
 ```
-$ curl http://c.vinococc.co/api/v2/ping
+$ curl http://c.ripple.moe/api/v2/ping
 {"code":200,"version":"19.0.0"}
 
-$ curl http://c.vinococc.co/api/v2/ping?pretty=1
+$ curl http://c.ripple.moe/api/v2/ping?pretty=1
 {
     "code":200,
     "version":"19.0.0"
@@ -93,13 +96,33 @@ $ curl http://c.vinococc.co/api/v2/ping?pretty=1
 The HTTP response will always have `Content-Type: application/json; charset=utf-8` and thus it'll always be a JSON object. A `code` field is in **every** response (even when not specified) and it coincides with the HTTP response code. When an error occurrs or when no "response" section is specified in the documentation of a specifid API handler, a `message` field will be present as well, describing the outcome of the request.
 
 The HTTP response codes will always be the same as the internal `code` of the response, if any.
+
 * `404` is used, apart from when a method is missing, also when a specified resource is not found.
-* Other used response codes are: TODO
+* Other used response codes are: TODO (check each api handler for now)
 
 ## Arrays
 
-Unlike the Ripple API, the Delta API returns empty JSON arrays (`[]`) instead of `null` when an empty list is returned.
+Unlike the Ripple API, the Delta API returns empty JSON arrays (`[]`) instead of `null` when an empty list should be returned.
 
+## Boolean strings
+Sometimes, a `bool` field is required in a GET parameter. This may arise a bit of confusion, because all parameters in a GET request are strings. `bool` parameters in GET requests are interpreted as follows:
+
+* false ⇔ `'false'`, `'0'` (case insensitive)
+* true ⇔ all other values
+
+tldr: You can use either 'true'/'false' or 1/0. Note that this is valid only for GET requests. When a `bool` field is required in a JSON field, you must use `true` and `false` (as booleans, not strings!).
+
+## Usernames
+There are two format of usernames on the Ripple stack: safe usernames and non-safe usernames.
+
+* **Non-safe usernames**: the username the user has chosen when signing up on ripple.
+* **Safe usernames**: a version of the non-safe username that is obtained by:
+    * Making all letters lowercase
+    * Replacing all spaces with underscores
+
+    Safe usernames were introduced when IRC support was first added to ripple.
+    
+    The uniqueness of a username is determined by its safe counterpart, meaning that two users whose safe username is the same, can't exist. Eg: `- Zino -` and `-_ZiNO -` have the same safe username (`-_zino_-`), so they are basically the same user.
 
 <!--
 ## Pagination
@@ -150,6 +173,12 @@ Client type    | Value
 ---------------|----------
 Game | 0
 IRC | 1
+Fake (†) | 2
+Web socket | 3
+
+#### †: A note on fake clients
+Fake clients are dummy clients used by the server to send chat messages when something occurs. The only instance where fake clients are used, is when the server sends messages as FokaBot on its own. Most FokaBot messages are sent by a Web socket client (which is controlled by the actual FokaBot chat bot software), but a few FokaBot messages, like the "match history available here" message sent after the first match in a multiplayer match, are sent directly by the server with a fake FokaBot client._
+TODO: List all instances where the fake client is used.
 
 ### Actions
 
