@@ -72,7 +72,7 @@ For the courious out there, the vinse ID is calculated like this:
 Where:
 
   * `u` is the UNIX timestamp, in seconds, of when the first game in that match was completed;
-  * `id` is the "Delta API" match id, the one the one relative to the counter that is reset when the server restarts.
+  * `id` is the "Delta API" (also known as "internal") match id, the one the one relative to the counter that is reset when the server restarts.
 
 However, you don't need to care about the Vinse ID, since the Ripple stack takes care of generating it.
 
@@ -116,14 +116,14 @@ tldr: You can use either 'true'/'false' or 1/0. Note that this is valid only for
 ## Usernames
 There are two format of usernames on the Ripple stack: safe usernames and non-safe usernames.
 
-* **Non-safe usernames**: the username the user has chosen when signing up on ripple.
+* **Non-safe usernames**: the exact username the user has chosen when signing up on Ripple.
 * **Safe usernames**: a version of the non-safe username that is obtained by:
     * Making all letters lowercase
     * Replacing all spaces with underscores
 
     Safe usernames were introduced when IRC support was first added to ripple.
     
-    The uniqueness of a username is determined by its safe counterpart, meaning that two users whose safe username is the same, can't exist. Eg: `- Zino -` and `-_ZiNO -` have the same safe username (`-_zino_-`), so they are basically the same user.
+    The uniqueness of a username is determined by its safe counterpart, meaning that two users whose safe username is the same, can't exist. Eg: Albeit `- Zino -` and `-_ZiNO -` are different usernames, their safe username is the same (`-_zino_-`), so they refer to the same user.
 
 <!--
 ## Pagination
@@ -240,6 +240,9 @@ Team      | Value
 No team | 0
 Red | 1
 Blue | 2
+
+TODO: check this as it doesn't make any sense
+
 
 * _Please note that `No team (0)` is used only for empty slots or if the team type is "Head to Head" or "Tag Coop" (which have no teams). When the team type is "Team vs" or "Tag Team Vs", all empty slots will be either in the blue or the red team._
 

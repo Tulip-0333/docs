@@ -25,10 +25,10 @@ Field name   | Type      | Value
 `description` | `string`  | Description of the channel
 `display_name` | `string`  | Chat channel displayed on the game client. Relevant only for `#multiplayer` and `#spectator`, otherwise it's the same as the `name` field.
 `moderated` | `bool` | Whether the channel is in moderated mode or not. When a channel is in moderated mode, only admins can write to it. Normal users can still read that channel.
-`name` | `string` | Name of the channel. Multiplayer channels have the following name: `#multi_{match_id}`. Spectator channels have the following name:  `#spect_{host_user_id}`.
+`name` | `string` | Name of the channel. Special cases: <ul><li>Multiplayer channels have the following name: `#multi_{match_id}`.</li><li>Spectator channels have the following name:  `#spect_{host_user_id}`.</li></ul>
 `public_read` | `bool` | Whether this channel is publicly accessible (can be joined by non-admins).
 `public_write` | `bool` | Whether normal users can send messages to this channel. This is different than `moderated`! The only channel that has `public_write = true` as of right now is `#announce`.
-`temporary` | `bool` | Whether the channel is temporary or not. Temporary channel are special channels that get disposed on particular conditions. `#spect_*` and `#multi_*` channels are temporary channels. `#spectator` channels get disposed when all spectators stop spectating, `#multiplayer` channels get disposed when the multiplayer match is disposed.
+`temporary` | `bool` | Whether the channel is temporary or not. Temporary channel are special channels that get disposed on particular conditions. `#spect_*` and `#multi_*` channels are _usually_ temporary channels. `#spectator` channels get disposed when all spectators stop spectating, `#multiplayer` channels get disposed when the multiplayer match is disposed. The only exception are special matches (created through the API), whose `#multiplayer` channel gets disposed when disposing the match through the API or when the Multiplayer Manager disposes the match automatically for being inactive for too long.
 
 ```json
 {
@@ -49,7 +49,7 @@ The following fields are present for Game clients, IRC clients and Web socket cl
 
 Field name   | Type      | Value
 -------------|-----------|-----------------------------------------------------------------
-`api_identifier`| `number` | The [API Identifier] of this client.
+`api_identifier`| `string` | The [API Identifier] of this client.
 `location` | `null`;`object` | Client's [Location](#location), or `null` if it was disabled by the client.
 `privileges` | `number` | The user privileges (from the database)
 `silence_end_time` | `null`;`number` | UNIX timestamp of when the silence of this user expires. `null` if the client is not silenced. Please note that this field may take a moment to update from the correct value in the database if the user has just been silenced.
@@ -137,7 +137,7 @@ Field name   | Type | Value
 `mods` | `number`  | Currently selected [Mods]. (†)
 `text` | `str` | Additional text displayed in the "user panel" in-game. When playing, it contains the name of the song.
 
-* **†:** Always present, but relevant only when playing/multiplaying/editing/etc. It's `0` or `""` (empty string) if it's not relevant for the current action or if it's was not set by the client.
+* **†:** Always present, but relevant only when playing/multiplaying/editing/etc. It's `0` or `""` (empty string) if it's not relevant for the current action or if it was not set by the client.
 
 ```json
 {
@@ -156,7 +156,7 @@ Field name   | Type | Value
 
 Field name   | Type | Value
 -------------|------|-------
-`api_owner_user_id` | `null`;`number` | <ul><li>If the match was created from the game, this field is always `null`.</li><li>If the match was created through the API, it contains the user id of whoever created the match</li></ul>
+`api_owner_user_id` | `null`;`number` | <ul><li>If the match was created from the game, this field is `null`.</li><li>If the match was created through the API, it contains the user id of whoever created the match</li></ul>
 `beatmap` | `object`  | [Multiplayer Beatmap](#multiplayer-beatmap) object of the current song
 `free_mod` | `bool`  | Whether the match has free mods enabled or not
 `game_mode` | `number`  | Current [Game Mode]
@@ -169,7 +169,7 @@ Field name   | Type | Value
 `private_match_history` | `bool` | Whether the match history for this match is private or not.
 `scoring_type` | `number` | Current [Scoring Type]
 `slots` | `[16]object` | List of [Slot]s that make up the match. _This list always contains 16 Slot objects_
-`special` | `bool` | Whether this is a special match. Special matches don't get destroyed when all clients leave. All matches created through the API are special matches.
+`special` | `bool` | Whether this is a special match. Special matches don't get destroyed when all clients leave. Match created through the API iff special matches.
 `team_type` | `number` | Current [Team Type]
 `vinse_id` | `number` | The Vinse ID (multiplayer match history) of this match. Note that the Vinse ID is generated when the first game of the match finishes and is **never** generated for matches whose history is private. In those cases, this field will be `null`. More information on Vinse IDs can be found [in the appendix](appendix#multiplayer-match-ids)
 
