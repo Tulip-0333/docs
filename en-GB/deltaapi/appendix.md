@@ -27,9 +27,10 @@ If you'd want to see something implemented in the API, you can open an issue at 
       * [A note on Fake clients](#†%3A-a-note-on-fake-clients)
   * [Actions](#actions)
   * [Bancho Privileges](#bancho-privileges)
-  * [Multiplayer scoring types](#multiplayer-scoring-types)
-  * [Multiplayer team types](#multiplayer-team-types)
+  * [Multiplayer Scoring Types](#multiplayer-scoring-types)
+  * [Multiplayer Team Types](#multiplayer-team-types)
   * [Multiplayer Teams](#multiplayer-teams)
+  * [Multiplayer Slot Statuses](#multiplayer-slot-statuses)
 
 <!-- tocstop -->
 
@@ -63,7 +64,7 @@ In the Delta API, there's the concept of API Identifiers: strings identifiying t
 Note that **the API Identifiers are not the tokens used by the Bancho Protocol to authenticate game clients**, they're different and API Identifiers can only used in the Delta API. API Identifiers are needed because a user may be connected from multiple clients at the same time (eg: two IRC clients and one game client), and sometimes you may want to do something on a specific client, not on all clients that belong to a specific user.
 
 ## Multiplayer match IDs
-A "Multiplayer Match" is a the multiplayer "room". Each match is identified in the API by an ID. Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match through the Delta API.   
+A "Multiplayer Match" is a the multiplayer "room". Each match is identified in the API by an ID (also called "Internal ID" in this documentation). Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match through the Delta API.   
 For the courious out there, the vinse ID is calculated like this:  
 ```python
 (u // (60 * 15)) << 32 | id
@@ -241,3 +242,17 @@ Red | 1
 Blue | 2
 
 * _Please note that `No team (0)` is used only for empty slots or if the team type is "Head to Head" or "Tag Coop" (which have no teams). When the team type is "Team vs" or "Tag Team Vs", all empty slots will be either in the blue or the red team._
+
+
+### Multiplayer slot statuses
+
+Team      | Value
+----------|----------
+Open | 1
+Locked | 2
+Not ready | 4
+Ready | 8
+No map | 16
+Playing | 32
+Complete | 64
+Quit | 128

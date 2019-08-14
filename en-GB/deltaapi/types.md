@@ -9,6 +9,11 @@ This page is an appendix of [v2](v2), showing the types most commonly used in th
 
 * [Chat Channel](#chat-channel)
 * [Client](#client)
+* [Location](#location)
+* [Action](#action)
+* [Multiplayer Match](#multiplayer-match)
+* [Multiplayer Match Slot](#multiplayer-match-slow)
+* [Multiplayer Match Beatmap](#multiplayer-match-beatmap)
 
 <!-- tocstop -->
 
@@ -44,12 +49,12 @@ The following fields are present for Game clients, IRC clients and Web socket cl
 
 Field name   | Type      | Value
 -------------|-----------|-----------------------------------------------------------------
-`api_identifier`| `integer` | The [API Identifier] of this client.
+`api_identifier`| `number` | The [API Identifier] of this client.
 `location` | `null`;`object` | Client's [Location](#location), or `null` if it was disabled by the client.
-`privileges` | `integer` | The user privileges (from the database)
-`silence_end_time` | `null`;`integer` | UNIX timestamp of when the silence of this user expires. `null` if the client is not silenced. Please note that this field may take a moment to update from the correct value in the database if the user has just been silenced.
-`type` | `integer` | [Client type](#appendix#client-types) (tldr: `0 = game; 1 = irc; 2 = fake; 3 = websocket;`)
-`user_id` | `integer` | 
+`privileges` | `number` | The user privileges (from the database)
+`silence_end_time` | `null`;`number` | UNIX timestamp of when the silence of this user expires. `null` if the client is not silenced. Please note that this field may take a moment to update from the correct value in the database if the user has just been silenced.
+`type` | `number` | [Client type](#appendix#client-types) (tldr: `0 = game; 1 = irc; 2 = fake; 3 = websocket;`)
+`user_id` | `number` | 
 `username` | `string` | **Non-safe** username
 
 ---
@@ -58,8 +63,8 @@ The following additional fields are present ONLY if the client is a game client:
 
 Field name   | Type      | Value
 -------------|-----------|-----------------------------------------------------------------
-`action`| [Action](#action)  | Current action
-`bancho_privileges`| `integer` | [Bancho Privileges](appendix#bancho-privileges) of this client
+`action`| `object`  | Current [Action](#action)
+`bancho_privileges`| `number` | [Bancho Privileges](appendix#bancho-privileges) of this client
 
 ---
 
@@ -67,9 +72,9 @@ A Fake client has ONLY THE FOLLOWING fields:
 
 Field name   | Type      | Value
 -------------|-----------|-----------------------------------------------------------------
-`type`| `integer`  | Always `2`.
-`user_id`| `integer` | User ID of this Fake client
-`username`| `integer`  | Username of the Fake Client
+`type`| `number`  | Always `2`.
+`user_id`| `number` | User ID of this Fake client
+`username`| `number`  | Username of the Fake Client
 
 _[More info on Fake clients](appendix#†%3A-a-note-on-fake-clients)_.
 
@@ -147,6 +152,273 @@ Field name   | Type | Value
 }
 ```
 
+## Multiplayer Match
+
+Field name   | Type | Value
+-------------|------|-------
+`api_owner_user_id` | `null`;`number` | <ul><li>If the match was created from the game, this field is always `null`.</li><li>If the match was created through the API, it contains the user id of whoever created the match</li></ul>
+`beatmap` | `object`  | [Multiplayer Beatmap](#multiplayer-beatmap) object of the current song
+`free_mod` | `bool`  | Whether the match has free mods enabled or not
+`game_mode` | `number`  | Current [Game Mode]
+`has_password` | `bool` | Whether the match is password protected
+`host_api_identifier` | `null`;`string` | [API Identifier] of the host of this match. An hostless match will have this field equal to `null` (matches can be turned hostless only through the API)
+`id` | `number`  | Internal ID of this match. **This is the ID you must use to identify the match within the API**. More information on Match IDs can be found [in the appendix](appendix#multiplayer-match-ids)
+`in_progress` | `bool` | Whether this match is in progress or not
+`mods` | `number` | Current [Mods]
+`name` | `string` | Name of the multiplayer match
+`private_match_history` | `bool` | Whether the match history for this match is private or not.
+`scoring_type` | `number` | Current [Scoring Type]
+`slots` | `[16]object` | List of [Slot]s that make up the match. _This list always contains 16 Slot objects_
+`special` | `bool` | Whether this is a special match. Special matches don't get destroyed when all clients leave. All matches created through the API are special matches.
+`team_type` | `number` | Current [Team Type]
+`vinse_id` | `number` | The Vinse ID (multiplayer match history) of this match. Note that the Vinse ID is generated when the first game of the match finishes and is **never** generated for matches whose history is private. In those cases, this field will be `null`. More information on Vinse IDs can be found [in the appendix](appendix#multiplayer-match-ids)
+
+```json
+{
+    "code": 200,
+    "matches": [
+        {
+            "api_owner_user_id": null,
+            "beatmap": {
+                "id": 1221602,
+                "md5": "ca637f9791736695472141689c95b8f6",
+                "name": "Saiya - Remote Control [Take Control!]"
+            },
+            "free_mod": 0,
+            "game_mode": 0,
+            "has_password": false,
+            "host_api_identifier": "@035a6247-c541-45be-9813-82f2e041b3b1",
+            "id": 3,
+            "in_progress": true,
+            "mods": 0,
+            "name": "Aventusxxx's game",
+            "private_match_history": false,
+            "scoring_type": 0,
+            "slots": [
+                {
+                    "mods": 0,
+                    "status": 32,
+                    "team": 0,
+                    "user": {
+                        "action": {
+                            "beatmap": {
+                                "id": 1221602,
+                                "md5": "ca637f9791736695472141689c95b8f6"
+                            },
+                            "game_mode": 0,
+                            "id": 12,
+                            "mods": 0,
+                            "text": "Saiya - Remote Control [Take Control!]"
+                        },
+                        "api_identifier": "@035a6247-c541-45be-9813-82f2e041b3b1",
+                        "bancho_privileges": 0,
+                        "location": null,
+                        "privileges": 3,
+                        "silence_end_time": null,
+                        "type": 0,
+                        "user_id": 84169,
+                        "username": "Aventusxxx"
+                    }
+                },
+                {
+                    "mods": 0,
+                    "status": 32,
+                    "team": 0,
+                    "user": {
+                        "action": {
+                            "beatmap": {
+                                "id": 1221602,
+                                "md5": "ca637f9791736695472141689c95b8f6"
+                            },
+                            "game_mode": 0,
+                            "id": 12,
+                            "mods": 0,
+                            "text": "Saiya - Remote Control [Take Control!]"
+                        },
+                        "api_identifier": "@c76e3671-9887-4a94-8374-e50dc65e1fb4",
+                        "bancho_privileges": 0,
+                        "location": null,
+                        "privileges": 3,
+                        "silence_end_time": null,
+                        "type": 0,
+                        "user_id": 84246,
+                        "username": "NoHandNoSkill"
+                    }
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 1,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                },
+                {
+                    "mods": 0,
+                    "status": 2,
+                    "team": 0,
+                    "user": null
+                }
+            ],
+            "special": false,
+            "team_type": 0
+        }
+    ]
+}
+```
+
+## Multiplayer Match Slot
+Field name   | Type | Value
+-------------|------|-------
+`mods` | `number` | This slot's [Mods]. <ul><li>If `free_mod = false`, all `slot`s will have their `mods` equal to the match `mods`.</li><li>If `free_mod = true`, each slot `mods` will contain the global mods AND the slot specific mods (`slot.mods = match.mods | mods_specific_to_this_slot if match.free_mods else match.mods`).</li></ul>
+`status` | `number` | [Slot Status] of this slot
+`team` | `number` | [Team] of this slot
+`user` | `null`;`object` | [Client](#client) object of this slot, `null` if there's nobody in this slot (the slot is either open but empty, or locked).
+
+An occupied slot:
+```json
+{
+    "mods": 0,
+    "status": 32,
+    "team": 0,
+    "user": {
+        "action": {
+            "beatmap": {
+                "id": 1221602,
+                "md5": "ca637f9791736695472141689c95b8f6"
+            },
+            "game_mode": 0,
+            "id": 12,
+            "mods": 0,
+            "text": "Saiya - Remote Control [Take Control!]"
+        },
+        "api_identifier": "@035a6247-c541-45be-9813-82f2e041b3b1",
+        "bancho_privileges": 0,
+        "location": null,
+        "privileges": 3,
+        "silence_end_time": null,
+        "type": 0,
+        "user_id": 84169,
+        "username": "Aventusxxx"
+    }
+}
+```
+
+A free slot:
+```json
+{
+    "mods": 0,
+    "status": 1,
+    "team": 0,
+    "user": null
+}
+```
+
+A locked slot:
+```json
+{
+    "mods": 0,
+    "status": 2,
+    "team": 0,
+    "user": null
+}
+```
+
+## Multiplayer Beatmap
+_Please note that a Multiplayer Beatmap object has an extra field (`name`) compared to the Beatmap object found in [Action](#action)s_
+
+Field name   | Type | Value
+-------------|------|-------
+`id` | `number` | Beatmap ID
+`md5` | `string` | MD5 hash of the .osu file of this beatmap. Can be used to identify the beatmap on the official osu!api as well.
+`name` | `string` | Readable name of the beatmap, _usually_ formatted as `<ARTIST> - <SONG_NAME> [<DIFFICULTY>]`
+
+```json
+{
+    "id": 1221602,
+    "md5": "ca637f9791736695472141689c95b8f6",
+    "name": "Saiya - Remote Control [Take Control!]"
+}
+```
+
+
+
 [API Identifier]: appendix#api-identifiers
-[Game Mode]: appendix#mode-ids
+[Game Mode]: appendix#modes-ids
 [Mods]: https://github.com/ppy/osu-api/wiki#mods
+[Team]: appendix#multiplayer-teams
+[Slot Status]: appendix#multiplayer-slot-statuses
+[Scoring Type]: appendix#multiplayer-scoring-types
+[Team Type]: appendix#multiplayer-team-types
+[Slot]: #multiplayer-match-slot
+[Beatmap]: #beatmap
