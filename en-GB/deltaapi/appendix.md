@@ -15,6 +15,7 @@ If you'd want to see something implemented in the API, you can open an issue at 
 * [Privileges](#privileges)
 * [API Identifiers](#api-identifiers)
 * [Multiplayer match IDs](#multiplayer-match-ids)
+* [Automatic multiplayer matches disposing](#automatic-multiplayer-matches-disposing)
 * [Parameters](#parameters)
 * [Pretty printing](#parameters)
 * [Response format](#response-format)
@@ -75,6 +76,9 @@ Where:
   * `id` is the "Delta API" (also known as "internal") match id, the one the one relative to the counter that is reset when the server restarts.
 
 However, you don't need to care about the Vinse ID, since the Ripple stack takes care of generating it.
+
+## Automatic multiplayer matches disposing
+TODO
 
 ## Parameters
 
