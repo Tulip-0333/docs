@@ -64,13 +64,13 @@ Do not get scared by the Table of Contents, you can set up a working chat bot by
   * [target_blocking_pms (server)](#target_blocking_pms-(server))
   * [target_away (server)](#target_away-(server))
   * [silence_info (server)](#silence_info-(server))
-  * [user_joined_channel (server)](#)
-  * [user_left_channel (server)](#)
-* [Events](#)
-  * [subscribe (client)](#)
-  * [subscribed (server)](#)
-  * [unsubscribe (client)](#)
-  * [unsubscribed (server)](#)
+  * [user_joined_channel (server)](#user_joined_channel-(server))
+  * [user_left_channel (server)](#user_left_channel-(server))
+* [Events](#events)
+  * [subscribe (client)](#subscribe-(client))
+  * [subscribed (server)](#subscribed-(server))
+  * [unsubscribe (client)](#unsubscribe-(client))
+  * [unsubscribed (server)](#unsubscribed-(server))
 * [Chat Channel Events](#)
   * [chat_channel_added (server)](#)
   * [chat_channel_removed (server)](#)
@@ -585,6 +585,115 @@ Name | Type | Description
 `is_silenced` | `boolean` | Whether you're silenced or not
 `end_time` | `integer` | UNIX timestamp of when your silence ends.
 `reason` | `string` | Reason why you are silenced
+
+---
+
+### user_joined_channel (server)
+
+This message is sent by the server when someone joins a channel you've joined.
+
+#### Data
+
+Name | Type | Description
+-----|------|-------------
+`client` | `object` | The [Client]
+`channel` | `object` | The [Chat Channel] they have joined
+
+---
+
+### user_parted_channel (server)
+
+TODO rename to user_left_channel to comply with leave_chat_channel
+
+This message is sent by the server when someone leaves a channel you've joined.
+
+#### Data
+
+Name | Type | Description
+-----|------|-------------
+`client` | `object` | The [Client]
+`channel` | `object` | The [Chat Channel] they have joined
+
+
+## Events
+You can ask the server to notify you when something happens. In order get notified, you must **subscribe** to an event.  
+Supported events and respective messages:
+- `chat_channels` ([chat_channel_added (server)](#chat_channel_added-(server)), [chat_channel_removed (server)](#chat_channel_removed-(server)))
+
+
+### subscribe (client)
+
+This message can be used to subscribe to a specific event. Once you're subscribed to an an event, you'll reveice all messages related to that event. A list of supported events and their respective messages is available [here](#events).
+
+#### Privileges
+The provided token must be authenticated.
+
+#### Data
+
+Name | Type | Description | Required? | Default
+-----|------|-------------|-----------|---------
+`event` | `string` | Name of the event you want to subscribe to. | Yes |
+
+#### Responses
+
+Code  | Meaning
+------|------------------------------------------------
+[subscribed](#subscribed-(server)) | Subscribed successfully
+TODO: Invalid event reply? | 
+
+---
+
+### subscribed (server)
+
+Response-like message sent by the server after a successfully elaborated [subscribe](#subscribe-(client)) message.
+
+#### Privileges
+The provided token must be authenticated.
+
+#### Data
+
+Name | Type | Description
+-----|------|-------------
+`event` | `string` | Name of the event you have successfully subscribed to.
+
+---
+
+### unsubscribe (client)
+
+This message can be used to unsubscribe to an event you've previously subscribed to. You'll not reveice any more messages related to that event once you unsubscribe from it. A list of supported events and their respective messages is available [here](#events).
+
+#### Privileges
+The provided token must be authenticated.
+
+#### Data
+
+Name | Type | Description | Required? | Default
+-----|------|-------------|-----------|---------
+`event` | `string` | Name of the event you want to unsubscribe from. | Yes |
+
+#### Responses
+
+Code  | Meaning
+------|------------------------------------------------
+[unsubscribed](#unsubscribed-(server)) | Subscribed successfully
+TODO: Invalid event reply? | 
+
+---
+
+### unsubscribed (server)
+
+Response-like message sent by the server after a successfully elaborated [unsubscribe](#unsubscribe-(client)) message.
+
+#### Privileges
+The provided token must be authenticated.
+
+#### Data
+
+Name | Type | Description
+-----|------|-------------
+`event` | `string` | Name of the event you have successfully unsubscribed from.
+
+
 
 
 [Client]: types#client
