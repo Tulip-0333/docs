@@ -77,6 +77,7 @@ const (
 	PrivilegeBlog                         // can do pretty much anything to the blog, and the documentation.
 	PrivilegeAPIMeta                      // can do /meta API calls. basically means they can restart the API server.
 	PrivilegeBeatmap                      // rank/unrank beatmaps. also BAT when implemented
+	PrivilegeBancho                       // can log in to bancho and use the chat through the delta ws api
 )
 ```
 
