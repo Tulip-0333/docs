@@ -71,9 +71,9 @@ Do not get scared by the Table of Contents, you can set up a working chat bot by
   * [subscribed (server)](#subscribed-(server))
   * [unsubscribe (client)](#unsubscribe-(client))
   * [unsubscribed (server)](#unsubscribed-(server))
-* [Chat Channel Events](#)
-  * [chat_channel_added (server)](#)
-  * [chat_channel_removed (server)](#)
+* [Chat Channels Events](#chat-channels-events)
+  * [chat_channel_added (server)](#chat_channel_added-(server))
+  * [chat_channel_removed (server)](#chat_channel_removed-(server))
 
 
 <!-- tocstop -->
@@ -617,13 +617,18 @@ Name | Type | Description
 
 ## Events
 You can ask the server to notify you when something happens. In order get notified, you must **subscribe** to an event.  
-Supported events and respective messages:
-- `chat_channels` ([chat_channel_added (server)](#chat_channel_added-(server)), [chat_channel_removed (server)](#chat_channel_removed-(server)))
+Supported events:
 
+
+Event name                             | Messages
+---------------------------------------|-------------
+[chat_channels](#chat-channels-events) | <ul><li>[chat_channel_added (server)](#chat_channel_added-(server))</li><li>[chat_channel_removed (server)](#chat_channel_removed-(server))</ul>
+
+---
 
 ### subscribe (client)
 
-This message can be used to subscribe to a specific event. Once you're subscribed to an an event, you'll reveice all messages related to that event. A list of supported events and their respective messages is available [here](#events).
+This message can be used to subscribe to a specific event. Once you're subscribed to an event, you'll reveice all messages related to that event. A list of supported events and their respective messages is available [here](#events).
 
 #### Privileges
 The provided token must be authenticated.
@@ -645,10 +650,7 @@ TODO: Invalid event reply? |
 
 ### subscribed (server)
 
-Response-like message sent by the server after a successfully elaborated [subscribe](#subscribe-(client)) message.
-
-#### Privileges
-The provided token must be authenticated.
+Response-like message sent by the server after a successfully elaborated [subscribe](#subscribe-(client)) message..
 
 #### Data
 
@@ -660,7 +662,7 @@ Name | Type | Description
 
 ### unsubscribe (client)
 
-This message can be used to unsubscribe to an event you've previously subscribed to. You'll not reveice any more messages related to that event once you unsubscribe from it. A list of supported events and their respective messages is available [here](#events).
+This message can be used to unsubscribe from an event you've previously subscribed to. You'll not reveice any more messages related to that event once you unsubscribe from it. A list of supported events and their respective messages is available [here](#events).
 
 #### Privileges
 The provided token must be authenticated.
@@ -684,14 +686,42 @@ TODO: Invalid event reply? |
 
 Response-like message sent by the server after a successfully elaborated [unsubscribe](#unsubscribe-(client)) message.
 
-#### Privileges
-The provided token must be authenticated.
-
 #### Data
 
 Name | Type | Description
 -----|------|-------------
 `event` | `string` | Name of the event you have successfully unsubscribed from.
+
+
+## Chat Channels Events
+You can subscribe to the `chat_channels` events to ask the server to be notified whenever a new chat channel is added or removed. `#multi_*` and `#spect_*` channels will trigger these events as well.  
+Subscribing to this event is the best way to make a chat bot present in every chat channel (`#multiplayer` and `#spectator` channels as well): you [join](#join_chat_channel-(client)) to all available chat channels when you authenticate (you can get a list of all chat channels via [GET /chat_channels](v2#get-%2Fchat_channels)), then you [subscribe](#subscribe-(client)) to the `chat_channels` event and you [join](#join_chat_channel-(client)) every channel that gets added to the server by listening for [chat_channel_added](#chat_channel_added-(server)) messages.
+
+---
+
+## chat_channel_added (server)
+**You must be subscribed to the [chat_channels](#chat-channels-events) event to receive this type of message.**
+
+Message sent by the server whenever a new chat channel is registered. Please note that **NO [chat_channel_added](#chat_channel_added-(server)) messages will be sent for already existing channels.** You should listen to this event if you want to join a channel as soon as it's created (useful for `#multi_*` and `#spect_*`). If you want to join all channels currently available (for example, right after authenticating), you should simply send a [join_chat_channel](#join_chat_channel-(client)) message for each available chat channel. You can retreive a list of all available channels via the [GET /chat_channels](v2#get-%2Fchat_channels) HTTP API handler.
+
+#### Data
+The `data` field contains the new [Chat Channel] that has just been registered on the server.
+
+---
+
+## chat_channel_removed (server)
+**You must be subscribed to the [chat_channels](#chat-channels-events) event to receive this type of message.**
+
+Message sent by the server whenever an existing chat channel is removed. Usually, the only chat channels that get removed are `#multi_*` and `#spect_*` channels.
+
+- `#spect_*` channels get disposed when nobody is spectating a user anymore
+- `#multi_*` channels get disposed when the respective match is disposed
+
+If you've joined a channel and that channel is removed, the server will automatically remove you from that channel and send you a [chat_channel_left](#chat_channel_left-(server)) message, so you don't have to manually send a [leave_chat_channel](#leave_chat_channel-(client)) message for each channel that gets removed.
+
+#### Data
+The `data` field contains the [Chat Channel] that has just been unregistered from the server.
+
 
 
 
