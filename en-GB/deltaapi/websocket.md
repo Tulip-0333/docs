@@ -74,7 +74,16 @@ Do not get scared by the Table of Contents, you can set up a working chat bot by
 * [Chat Channels Events](#chat-channels-events)
   * [chat_channel_added (server)](#chat_channel_added-(server))
   * [chat_channel_removed (server)](#chat_channel_removed-(server))
-
+* [Lobby Events](#)
+    * [lobby_match_added (server)](#)
+    * [lobby_match_removed (server)](#)
+* [Multiplayer Events](#)
+    * [match_update (server)](#)
+    * [match_disposed (server)](#)
+    * [match_user_joined (server)](#)
+    * [match_user_left (server)](#)
+* [Users Events](#)
+    * [status_update (server)](#)
 
 <!-- tocstop -->
 
@@ -83,14 +92,16 @@ Do not get scared by the Table of Contents, you can set up a working chat bot by
 
 Delta's Websocket API has a very simple protocol based on [JSON](https://en.wikipedia.org/wiki/JSON). Each information exchanged between the client and the server (and vice versa) is called a "Message".
 
-**All** messages have the following structure:
+**All** messages exchanged between the client and the server have the following structure:
 
 Field name | Type | Value
 -----------|------|-------
 `type` | `string` | A string identifying the type of this message
-`data` | `[]object` | A JSON object containing additional data carried by the message
+`data` | `object` | A JSON object containing additional data carried by the message
 
-The structure of the `data` field varies based on the `type` of the message. The `data` field is always present, even for messages that do not carry additional data. In this case, the `data` field will be an empty JSON object (`{}`).
+- The structure of the `data` field varies based on the `type` of the message.  
+- Messages sent by the server, always have the `data` field, even in messages that do not carry additional data. In this case, the `data` field will be an empty JSON object (`{}`).
+- In your WebSocket client, you may omit the `data` field when the message does not require any additional data.
 
 ## Simple Messages
 Quite a few messages used by the Websocket API only carry some text. They are often used to report errors back to the client. These messages are called "Simple Messages" and their `data` field has the following structure:
@@ -110,13 +121,13 @@ Field name | Type     | Value
 ```
 
 ## Pinging
-The server will periodically ping every Websocket client that hasn't sent any message to the server to make sure they're still alive and working correctly.  
+The server will periodically ping every Websocket client that hasn't sent a message to the server for a bit, to make sure they're still alive and working correctly.  
 Whenever you send a valid message, the server will mark you as 'alive' and will not attempt to ping you for a while.
 
 When you get a 'ping' message from the server, you should reply with a 'pong' (or any other valid message) as soon as possible (S is the sever, C is the client):  
 ```
 S: {"type": "ping", "data": {}}
-C: {"type": "pong", "data": {}}
+C: {"type": "pong"}
 ```
 Sending a 'pong' message (or any other message, really) is sufficient for the server to mark you as 'alive'.  
 
@@ -126,11 +137,11 @@ S: {"type": "ping", "data": {}}
 C: {"type": "pong", "data": {"reply": true}}
 S: {"type": "pong_ack", "data": {"last_ping_time": 1567608532}}
 ```
-`last_ping_time` will contain the UNIX timestamp of when the server received your most recent valid message.  
+`last_ping_time` will contain the UNIX timestamp of when the server received your most recent valid message (which should be the 'pong' message itself).  
 
 Finally, you can also ping the server to make sure it is alive
 ```
-C: {"type": "ping", "data": {}}
+C: {"type": "ping"}
 S: {"type": "pong", "data": {}}
 ```
 
@@ -153,7 +164,7 @@ Name | Type | Description | Required? | Default
 
 #### Responses
 
-The server will reply with a [ohce](#ohce-(server)) message.
+The server will reply soon with a [ohce](#ohce-(server)) message.
 
 ---
 
@@ -195,7 +206,7 @@ S: {"type": "goodbye", "data": {}}
 
 TODO maybe rename
 
-Server notifications (those that appear as yellow notifications in-game). They usually originate from the server itself (login news, server restarting alerts, ...) but they can also originate from API applications (see [POST /clients/{api_identifier}/alert](v2#post-%2Fclients%2F%7Bapi_identifier%7D%2Falert) HTTP API handler)
+Server notifications (those that appear as [yellow notifications](appendix#yellow-notifications) in-game). They usually originate from the server itself (login news, server restarting alerts, ...) but they can also originate from API applications (see [POST /clients/{api_identifier}/alert](v2#post-%2Fclients%2F%7Bapi_identifier%7D%2Falert) HTTP API handler)
 
 #### Data
 
@@ -223,7 +234,7 @@ Name | Type | Description | Required? | Default
 
 * **The token must have the [PrivilegeBancho](/docs/api/appendix#privileges) privilege.**
 * Bearer tokens are supported as well, and they must be prefixed with `Bearer ` (eg: if your token is `abcd`, you'll have to set `token` to `Bearer 123`).
-* You must wait for an `auth_success` message before sending any message that requires you be authenticated
+* You must wait for an `auth_success` message before sending any message that requires you being authenticated
 
 #### Responses
 
@@ -300,7 +311,7 @@ The `data` field contains the [Client] object relative to your Websocket client.
 
 ### join_chat_channel (client)
 
-This message can be used to join chat channels. Once you join a channel, you'll receive [chat_message](#TODO) messages send to that channel. You can join however many channels you want, as long as you have the required privileges to join them. You can also join `#multi_*` and `#spect_*` channels. You can get a list of the available chat channels using the [GET /chat_channels](v2#get-%2Fchat_channels) HTTP API handler.
+This message can be used to join chat channels. Once you join a channel, you'll receive [chat_message](#TODO) messages sent to that channel. You can join however many channels you want, as long as you have the required privileges to join them. You can also join `#multi_*` and `#spect_*` channels. You can get a list of the available chat channels using the [GET /chat_channels](v2#get-%2Fchat_channels) HTTP API handler.
 
 #### Privileges
 - The provided token must be authenticated.
@@ -352,7 +363,7 @@ Name | Type | Description
 
 ### leave_chat_channel (client)
 
-This message can be used to leave a chat channel that you've previously joined with a [join_chat_channel](#join_chat_channel-(client)) message. Once you leave a channel, you will not receive [chat_message] relative to that chat channel anymore.
+This message can be used to leave a chat channel that you've previously joined with a [join_chat_channel](#join_chat_channel-(client)) message. Once you leave a channel, you will not receive [chat_message]s relative to that chat channel anymore.
 
 #### Privileges
 The provided token must be authenticated
