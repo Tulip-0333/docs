@@ -16,6 +16,7 @@ If you'd want to see something implemented in the API, you can open an issue at 
 * [API Identifiers](#api-identifiers)
 * [Multiplayer match IDs](#multiplayer-match-ids)
 * [Automatic multiplayer matches disposing](#automatic-multiplayer-matches-disposing)
+* [Yellow Notifications](#yellow-notifications)
 * [Parameters](#parameters)
 * [Pretty printing](#parameters)
 * [Response format](#response-format)
@@ -61,11 +62,11 @@ and prefix it with `Bearer `.
 The privileges used by the Delta API are the same as the ones used by the Ripple API. Please refer to [this section of the Ripple API documentation appendix](../api/appendix#privileges) for more information.
 
 ## API Identifiers
-In the Delta API, there's the concept of API Identifiers: strings identifiying tokens in a unique way. They're largely used in the `clients` and `multiplayer` API handlers. They are in the format `@uuid`. An example of an API identifier may be `@0f23d692-ee91-4a68-af68-080bcfdc1dcf`.  
+In the Delta API, there's the concept of API Identifiers: strings identifiying clients in a unique way. They're largely used in the `clients` and `multiplayer` API handlers. They are in the format `@uuid`. An example of an API identifier may be `@0f23d692-ee91-4a68-af68-080bcfdc1dcf`.  
 Note that **the API Identifiers are not the tokens used by the Bancho Protocol to authenticate game clients**, they're different and API Identifiers can only used in the Delta API. API Identifiers are needed because a user may be connected from multiple clients at the same time (eg: two IRC clients and one game client), and sometimes you may want to do something on a specific client, not on all clients that belong to a specific user.
 
 ## Multiplayer match IDs
-A "Multiplayer Match" is a the multiplayer "room". Each match is identified in the API by an ID (also called "Internal ID" in this documentation). Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match through the Delta API.   
+A "Multiplayer Match" is a multiplayer "room". Each match is identified in the API by an ID (also called "Internal ID" in this documentation). Multiplayer match IDs go from 1 to 2147483647. The counter is reset each time the bancho server emulator is restarted. You can use this ID to manipulate matches through the Delta API (see the [Multiplayer](v2#multiplayer) section). When the first game of a multiplayer room is completed, the match is stored permanently in [vinse](https://vinse.ripple.moe), and a new ID, the vinse ID, is generated. The vinse ID is available through the Delta API as well, but it cannot be used to identify a match through the Delta API.   
 For the courious out there, the vinse ID is calculated like this:  
 ```python
 (u // (60 * 15)) << 32 | id
@@ -75,10 +76,29 @@ Where:
   * `u` is the UNIX timestamp, in seconds, of when the first game in that match was completed;
   * `id` is the "Delta API" (also known as "internal") match id, the one the one relative to the counter that is reset when the server restarts.
 
-However, you don't need to care about the Vinse ID, since the Ripple stack takes care of generating it.
+However, you don't need to care about the Vinse ID, since the Ripple stack takes care of generating it. _It's only used by vinse to keep track of multiplayer matches for their match history, even when the server restarts._
 
 ## Automatic multiplayer matches disposing
-TODO
+Multiplayer matches normally get disposed when all players in it leave the multiplayer match. Matches created through the API (with [POST /multiplayer](v2#post-%2Fmultiplayer)), however, will not act like that. These kind of matches can only be disposed:
+
+  - When manually calling the [DELETE /multiplayer/{id}](v2#delete-%2Fmultiplayer%2F{id}) API handler
+  - When the Multiplayer Manager flags the match as inactive. This happens when the match is empty and there are no changes to the match for too long.
+
+However, sometimes you may want to keep an API match alive even when it's been empty for a long time. In order to achieve this, you can periodically call the [GET /multiplayer/{id}](v2#get-%2Fmultiplayer%2F{id}) API handler, which will mark the match as active. Calling that handler once per minute is enough to keep the match alive. Having some interaction in the match (eg: a user joins) or calling any other multiplayer-related API handler will mark that match as alive as well.
+
+## Yellow notifications
+There are some API handlers that refer to "yellow notifications". The way these notifications are displayed varies based on the type of the client:
+
+- Game clients display "yellow notifications" as (you guessed it) yellow messages in the bottom right corner of the screen
+- IRC clients will see them as messages by FokaBot
+- Web socket clients will receive them as [server_announce](websocket#server_announce-(server)) messages
+
+---
+
+![](/docs/images/rollsrois.jpg)  
+_A yellow notification on a game client_
+
+---
 
 ## Parameters
 
@@ -115,7 +135,7 @@ Sometimes, a `bool` field is required in a GET parameter. This may arise a bit o
 * false ⇔ `'false'`, `'0'` (case insensitive)
 * true ⇔ all other values
 
-tldr: You can use either 'true'/'false' or 1/0. Note that this is valid only for GET requests. When a `bool` field is required in a JSON field, you must use `true` and `false` (as booleans, not strings!).
+tldr: You can use either `'true'`/`'false'` or `'1'`/`'0'`. Note that this is valid only for GET requests. When a `bool` field is required in a JSON field, you must use `true` and `false` (as booleans, not strings!).
 
 ## Usernames
 There are two format of usernames on the Ripple stack: safe usernames and non-safe usernames.
@@ -167,9 +187,9 @@ Just like on the Ripple API:
 
 Game Mode     | Value
 --------------|----------
-osu! standard | 0
-Taiko | 1
-Catch the Beat | 2
+osu!standard | 0
+osu!taiko | 1
+osu!catch | 2
 osu!mania | 3
 
 ### Client types
@@ -216,7 +236,7 @@ Tournament Staff | 16 |
 
 * _Please note that these can be combined. Eg: `20 <=> 16 | 4` is a Tournament Staff who has Donor._
 * _Username color priority: `Blue > Red > Bright Yellow > Pale Yellow`_
-* _Also note that the Pink name that "BanchoBot" has on the official server is hardcoded in the client, based on the username, so it's not possible to give any other user a pink name if their name is not "BanchoBot"_
+* _Also note that the Pink name that "BanchoBot" has on the official server is hardcoded in the client, based on the username, so it's not possible to give any other user a pink name, unless their username is "BanchoBot"_
 
 
 ### Multiplayer scoring types
@@ -248,7 +268,7 @@ Blue | 2
 TODO: check this as it doesn't make any sense
 
 
-* _Please note that `No team (0)` is used only for empty slots or if the team type is "Head to Head" or "Tag Coop" (which have no teams). When the team type is "Team vs" or "Tag Team Vs", all empty slots will be either in the blue or the red team._
+* _Please note that `No team (0)` is used only for empty slots or if the team type is "Head to Head" or "Tag Coop" (which have no teams). When the team type is "Team vs" or "Tag Team Vs", all slots (including empty ones) will be assigned to a team._
 
 
 ### Multiplayer slot statuses
