@@ -3,7 +3,10 @@ name: Delta Websocket API
 ---
 # Delta Websocket API
 
-> If you're browsing this on GitHub or zxq.co, please note that this is not final until you see it on docs.ripple.moe. Some stuff needs to be implemented, some stuff will be renamed, some stuff behaves differently in production compared to what's written in this document.
+> The Delta API should be considered as a preview. Some stuff in it will be changed before its final release. You can use it if you want, but we do not recommend it yet. Once the delta API is complete, we'll state a list of the breaking changes so you can adapt your code to work with the final v2 version.
+
+> Some websocket API features haven't been implemented yet, some stuff will be renamed and some stuff behaves differently in production compared to what's written in this document.
+
 
 Delta has a Websocket API that's mainly used to interact with the chat. The conventional way of creating Ripple Chat Bots is by using IRC. This is still possible in Delta, but the recommended way of creating chatbots is using the Websocket API. This is because the Websocket API provides more information about clients (like their api identifiers), making it possible to identify which client sent a particular message, rather than just their username.
 

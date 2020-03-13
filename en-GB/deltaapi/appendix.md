@@ -3,6 +3,8 @@ name: Appendix
 ---
 # Appendix
 
+> The Delta API should be considered as a preview. Some stuff in it will be changed before its final release. You can use it if you want, but we do not recommend it yet. Once the delta API is complete, we'll state a list of the breaking changes so you can adapt your code to work with the final v2 version
+
 This file contains further information explaining additional stuff on the Delta API not explained in the [main document](v2).
 
 If you'd want to see something implemented in the API, you can open an issue at [this GitHub repository](https://github.com/osuripple/api-features), and we'll look into it.
