@@ -46,6 +46,19 @@ Implemented requests:
 [ ] get_replay
 ```
 
+## Relax scores and stats
+Relax scores and stats are not available on the official server. If you want your app to have support for
+relax scores and stats, **you should** use the [v1](v1) API instead.
+
+**However,** we have decided to add an additional
+`relax` GET argument available in some peppy API requests to make it easier to integrate relax scores and
+stats support for already existing apps. By default, all Peppy API endpoints will return scores and stats
+relative to the **classic** mode. If you want to get relax scores and stats, you must provide
+the `relax=1` GET parameter.
+
+Handlers that support the `relax` GET argument will have it listed in their "Parameters" paragraph.
+
+
 ## Table of Contents
 
 <!-- toc -->
@@ -75,6 +88,7 @@ Name | Description                                                              
 `u`  | Username or user ID of the requested user.                               | Yes
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
+`relax` | Use `0` (default) to get classic stats. Use `1` to get relax stats. **(ripple only!)** | No (defaults 0)
 
 (`k` and `eventdays` are discarded)
 
@@ -166,6 +180,7 @@ Name | Description                                                              
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 50)                    | No (defaults 10)
+`relax` | Use `0` (default) to get classic scores. Use `1` to get relax scores. Use `-1` to get both, mixed. **(ripple only!)** | No (default 0)
 
 (`k` is discarded)
 
@@ -334,6 +349,7 @@ Name | Description                                                              
 `m`  | Number of the gamemode for which you are requesting data. [See Modes IDs](#modes-ids) | No (defaults 0)
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 100)                   | No (defaults 10)
+`relax` | Use `0` (default) to get classic scores. Use `1` to get relax scores. Use `-1` to get both, mixed. **(ripple only!)** | No (default 0)
 
 (`k` is discarded)
 
@@ -506,6 +522,7 @@ Name | Description                                                              
 `mods` | Specify to filter scores by a certain mod combination.                 | No
 `type` | Specify whether `u` is an user ID or an username. Use `string` for usernames. By default, if `u` is possibly a number, it is always first checked if an user with such user ID exists in the database. If you're passing an username, make sure to pass it having type=string, otherwise things **will** fuck up sooner or later. | No
 `limit` | Maximum amount of results to return. (0 < x <= 100)                   | No (defaults 10)
+`relax` | Use `0` (default) to get classic scores. Use `1` to get relax scores. Use `-1` to get both, mixed. **(ripple only!)** | No (default 0)
 
 (`k` is discarded)
 
@@ -616,6 +633,7 @@ Name | Description                                                              
 `a`  | Specify whether converted beatmaps are included.                         | No (defaults 0)
 `h`  | MD5 beatmap hash.                                                        | No
 `limit` | Maximum amount of results to return. (0 < x <= 500)                   | No (defaults 500)
+`relax` | Use `0` (default) to get classic scores. Use `1` to get relax scores. Use `-1` to get both, mixed. **(ripple only!)** | No (default 0)
 
 (`k`, `since`, `u`, `type` are discarded)
 
