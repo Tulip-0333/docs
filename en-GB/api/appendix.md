@@ -200,8 +200,8 @@ Play style sometimes appears in the stats of an user. The bitwise enum for it ca
 ## Modes IDs
 
 ```
-osu! standard  = 0
-Taiko          = 1
-Catch the Beat = 2
-osu!mania      = 3
+osu! standard = 0
+osu!taiko     = 1
+osu!catch     = 2
+osu!mania     = 3
 ```
