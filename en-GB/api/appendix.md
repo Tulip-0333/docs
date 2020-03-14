@@ -28,6 +28,7 @@ Currently no API clients are available, however they are planned for Go and node
 * [Usernames](#usernames)
 * [IN Parameters](#in-parameters)
 * [Sorting](#sorting)
+* [Relax stats and scores](#relax-stats-and-scores)
 * [Play style](#play-style)
 * [Modes IDs](#modes-ids)
 
@@ -179,6 +180,18 @@ These have a peculiarity. They can be passed multiple times in a query string. W
 ## Sorting
 
 The API allows sorting elements. To do so, you will need to pass the parameter `sort`, with the value being the field being sorted, a comma and then asc/desc. By default everything is sorted desc. For instance, `sort=id,desc` will sort by `id` descendently, and also `sort=id` will. When there's a sorting section in an endpoint, the fields that can be sorted will be specified.
+
+## Relax stats and scores
+By default, all API handlers (both [v1](v1) and [peppy](peppy)) will return "classic" scores and stats only, for backwards compatibility.
+It's possible to retreive relax stats and scores (or, in some API handlers, both classic and relax at the same time)
+with the `relax` GET parameter.
+
+- `relax=0` refers to classic
+- `relax=1` refers to relax
+- `relax=-1` refers to both classic and relax (not alway supported)
+
+Generally speaking, refer to the Parameters paragraph of the API handler you're interested in to know how the `relax` parameter
+behaves.
 
 ## Play style
 
